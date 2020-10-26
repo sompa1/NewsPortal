@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsPortal.Web", "NewsPortal.Web\NewsPortal.Web.csproj", "{00A4FD9C-6D2E-40D7-989F-CDF583B7CB97}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsPortal.Dal", "NewsPortal.Dal\NewsPortal.Dal.csproj", "{73C293CA-B163-4695-972F-7018485553B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{00A4FD9C-6D2E-40D7-989F-CDF583B7CB97}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00A4FD9C-6D2E-40D7-989F-CDF583B7CB97}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00A4FD9C-6D2E-40D7-989F-CDF583B7CB97}.Release|Any CPU.Build.0 = Release|Any CPU
+		{73C293CA-B163-4695-972F-7018485553B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73C293CA-B163-4695-972F-7018485553B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73C293CA-B163-4695-972F-7018485553B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73C293CA-B163-4695-972F-7018485553B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
