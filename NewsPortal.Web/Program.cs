@@ -6,14 +6,19 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using NewsPortal.Web.Hosting;
+using NewsPortal.Dal;
 
 namespace NewsPortal.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public async static Task Main(string[] args)
         {
-            CreateHostBuilder(args).Build().Run();
+            (await CreateHostBuilder(args)
+                .Build()
+                .MigrateDatabase<NewsPortalDbContext>())
+                .Run();
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>

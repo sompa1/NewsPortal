@@ -9,5 +9,7 @@ namespace NewsPortal.Dal.Entities
         public int Id { get; set; }
         public string Name { get; set; }
 
+        public ICollection<News> Books { get; set; }
+
     }
 }
