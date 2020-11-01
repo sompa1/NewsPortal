@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NewsPortal.Dal;
+using NewsPortal.Dal.Services;
 
 namespace NewsPortal.Web
 {
@@ -26,6 +22,9 @@ namespace NewsPortal.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<NewsPortalDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString(nameof(NewsPortalDbContext))));
+
+            services.AddScoped<NewsService>();
+
             services.AddControllersWithViews();
         }
 
