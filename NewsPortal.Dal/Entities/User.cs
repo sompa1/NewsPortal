@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 namespace NewsPortal.Dal.Entities
 {
-    public class Category
+    public class User : IdentityUser<int>
     {
-        public int Id { get; set; }
         public string Name { get; set; }
-
-        public ICollection<News> News { get; set; }
+        public ICollection<Comment> Comments { get; set; }
 
     }
 }

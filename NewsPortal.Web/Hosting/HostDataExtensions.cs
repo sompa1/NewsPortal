@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
+using NewsPortal.Dal.SeedInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
@@ -19,6 +20,13 @@ namespace NewsPortal.Web.Hosting
                 var serviceProvider = scope.ServiceProvider;
                 var context = serviceProvider.GetRequiredService<TContext>();
                 context.Database.Migrate();
+
+                var roleSeeder = serviceProvider.GetRequiredService<IRoleSeedService>();
+                await roleSeeder.SeedRoleAsync();
+
+                var userSeeder = serviceProvider.GetRequiredService<IUserSeedService>();
+                await userSeeder.SeedUserAsync();
+
             }
             return host;
         }

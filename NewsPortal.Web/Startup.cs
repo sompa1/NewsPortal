@@ -4,7 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Identity;
+//using Microsoft.AspNetCore.Identity.UI.Services;
 using NewsPortal.Dal;
+using NewsPortal.Dal.Entities;
+using NewsPortal.Dal.SeedInterfaces;
+using NewsPortal.Dal.SeedServices;
 using NewsPortal.Dal.Services;
 
 namespace NewsPortal.Web
@@ -21,11 +26,21 @@ namespace NewsPortal.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<NewsPortalDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString(nameof(NewsPortalDbContext))));
+            services.AddIdentity<User, IdentityRole<int>>()
+            .AddEntityFrameworkStores<NewsPortalDbContext>()
+            .AddDefaultTokenProviders();
+            
+            services.AddDbContext<NewsPortalDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString(nameof(NewsPortalDbContext)))).AddTransient<ISeedService, SeedService>(); ;
 
             services.AddScoped<NewsService>();
+            services.AddScoped<CommentService>();
 
+            services.AddScoped<IRoleSeedService, RoleSeedService>();
+            services.AddScoped<IUserSeedService, UserSeedService>();
+
+            services.AddMvc();
             services.AddControllersWithViews();
+            services.AddRazorPages();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -46,6 +61,7 @@ namespace NewsPortal.Web
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

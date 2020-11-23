@@ -9,10 +9,37 @@ namespace NewsPortal.Web.Controllers {
 
         public NewsService NewsService { get; }
 
-        public NewsController(NewsService newsService) {
+        public CommentService CommentService { get; }
+
+        //public UserManager<User> UserManager { get; }
+
+        public NewsController(NewsService newsService, CommentService commentService) {
             NewsService = newsService;
+            CommentService = commentService;
+        }
+       public IActionResult Index(int? id)
+        {
+            if (!id.HasValue)
+                return RedirectToAction("Index", "Home");
+
+            var news = NewsService.GetOneNews(id.Value);
+
+            if (news == null)
+                return NotFound();
+
+            var comments = CommentService.GetComments(id.Value);
+
+            var model = new NewsModel
+            {
+                News = news,
+                Comments = comments
+ //               CurrentUserId = CurrentUserId
+            };
+
+            return View(model);
         }
 
+        /*
         public IActionResult News() {
 
             var news = NewsService.GetNews().Select(n => new NewsModel {
@@ -21,5 +48,6 @@ namespace NewsPortal.Web.Controllers {
 
             return View(news);
         }
+        */
     }
 }

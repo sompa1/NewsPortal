@@ -1,88 +1,47 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NewsPortal.Dal.Entities;
+using NewsPortal.Dal.EntityConfigurations;
+using NewsPortal.Dal.SeedInterfaces;
+using NewsPortal.Dal.SeedServices;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 
 namespace NewsPortal.Dal
 {
-    public class NewsPortalDbContext: DbContext
+    public class NewsPortalDbContext: IdentityDbContext<User, IdentityRole<int>, int>
     {
+        private readonly ISeedService _seedService;
+        public NewsPortalDbContext(DbContextOptions options, ISeedService seedService) : base(options)
+        {
+            _seedService = seedService;
+        }
         public NewsPortalDbContext(DbContextOptions options) : base(options) { }
         public DbSet<News> News { get; set; }
+        public DbSet<Author> Authors { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Comment> Comments { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Category>().HasData(
-                new Category
-                {
-                    Id = 1,
-                    Name = "Crime"
-                },
-                new Category
-                {
-                    Id = 2,
-                    Name = "Entertainment"
-                },
-                new Category
-                {
-                    Id = 3,
-                    Name = "Politics"
-                },
-                new Category
-                {
-                    Id = 4,
-                    Name = "World News"
-                },
-                new Category
-                {
-                    Id = 5,
-                    Name = "Impact"
-                },
-                new Category
-                {
-                    Id = 6,
-                    Name = "Weird News"
-                },
-                new Category
-                {
-                    Id = 7,
-                    Name = "Black Voices"
-                },
-                new Category
-                {
-                    Id = 8,
-                    Name = "Women"
-                },
-                new Category
-                {
-                    Id = 9,
-                    Name = "Comedy"
-                },
-                new Category
-                {
-                    Id = 10,
-                    Name = "Sports"
-                },
-                new Category
-                {
-                    Id = 11,
-                    Name = "Business"
-                },
-                new Category
-                {
-                    Id = 12,
-                    Name = "Tech"
-                }
 
-            );
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>().ToTable("Users");
+
+            modelBuilder.ApplyConfiguration(new AuthorEntityConfiguration(_seedService));
+            modelBuilder.ApplyConfiguration(new NewsEntityConfiguration(_seedService));
+            modelBuilder.ApplyConfiguration(new CategoryEntityConfiguration(_seedService));
+
+
+            /*
             modelBuilder.Entity<News>().HasData(
                 new News
                 {
                     Id = 1,
                     Headline = @"There Were 2 Mass Shootings In Texas Last Week, But Only 1 On TV",
-                    Author = @"Melissa Jeltsen",
+                    AuthorId = 1,
                     ShortDescription = @"She left her husband. He killed their children. Just another day in America.",
                     Body = @"<div><p><span>On the evening of May 15, Amanda and Justin took the kids out for pizza. During the car ride, Amanda told Justin about her new boyfriend, that it was serious and he was planning to move in with her.  </span></p></div>
              <div><p><span> For the past few months, Amanda had been in a long-distance relationship with Seth Richardson, whom she knew from her teen years.They, too, had met through “World of Warcraft,” and had kept in touch for a decade. </span></p></div>
@@ -94,7 +53,7 @@ namespace NewsPortal.Dal
                 {
                     Id = 2,
                     Headline = @"Will Smith Joins Diplo And Nicky Jam For The 2018 World Cup's Official Song",
-                    Author = @"Andy McDonald",
+                    AuthorId = 2,
                     ShortDescription = @"Of course it has a song.",
                     Body = @"<div><p>The <a href=""https://www.huffpost.com/topic/fifa-world-cup"">2018 FIFA World Cup</a> starts June 14 in Russia, and now it has an official song. </p></div>
 <div><p>Producer Diplo and reggaeton star Nicky Jam collaborate on “Live It Up,” which also features Albanian singer Era Istrefi and actor Will Smith, who is trying to<a href=""https://youtu.be/6wGj89GE6aQ""> restart his music career</a>.</p></div>
@@ -106,7 +65,7 @@ namespace NewsPortal.Dal
                 {
                     Id = 3,
                     Headline = @"With Its Way Of Life At Risk, This Remote Oyster-Growing Region Called In Robots",
-                    Author = @"Karen Pinchin",
+                    AuthorId = 3,
                     ShortDescription = @"The revolution is coming to rural New Brunswick.",
                     Body = @"<div><p><span>NEGUAC, Canada ― When the harbors aren’t frozen, Maxime Daigle and his older brother Jean-Francois often take to the cold waters off New Brunswick in one of their family’s flat-bottomed boats to harvest oysters. The siblings are among hundreds of producers along this rocky coast who grow oysters for La Maison BeauSoleil in the company’s distinctive floating bags. </span></p></div>
              < div><p>For the Daigles this is a family business.Maxime’s father, Maurice, co-owns La Maison BeauSoleil, an oyster grower, packer and distributor that he runs with his business partner, Amédée Savoie, whose son, Allain Savoie, also works in the company.</p></div>
@@ -119,7 +78,7 @@ namespace NewsPortal.Dal
                     CategoryId = 5,
                     PublishDate = new DateTime(2018, 5, 27, 8, 0, 0)
                 }
-            );
+            ); */
         }
 
     }
