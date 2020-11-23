@@ -4,6 +4,29 @@ using System.Text;
 
 namespace NewsPortal.Dal.Specifications {
 
-    public class NewsSpecification {
+    public class NewsSpecification
+    {
+        public int? PageNumber { get; set; }
+        public int? PageSize { get; set; } = 24;
+
+        public string Author { get; set; }
+        public int? AuthorId { get; set; }
+        public string Headline { get; set; }
+        public string Category { get; set; }
+        public int? CategoryId { get; set; }
+        public int? MinNumberOfComments { get; set; }
+        public int? MaxNumberOfComments { get; set; }
+        public int? MinPublishYear { get; set; }
+        public int? MaxPublishYear { get; set; }
+        public NewsOrder? Order { get; set; }
+        public enum NewsOrder
+        {
+            AuthorAscending,
+            AuthorDescending,
+            PublishYearAscending,
+            PublishYearDescending,
+            NumberOfCommentsDescending,
+            NumberOfCommentsAscending
+        }
     }
 }

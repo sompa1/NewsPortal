@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using NewsPortal.Dal.Entities;
 using NewsPortal.Dal.Services;
 using NewsPortal.Web.Models;
 using System.Linq;
@@ -11,12 +14,19 @@ namespace NewsPortal.Web.Controllers {
 
         public CommentService CommentService { get; }
 
-        //public UserManager<User> UserManager { get; }
+        public UserManager<User> UserManager { get; }
 
-        public NewsController(NewsService newsService, CommentService commentService) {
+        public NewsController(NewsService newsService, CommentService commentService, UserManager<User> userManager) {
             NewsService = newsService;
             CommentService = commentService;
+            UserManager = userManager;
         }
+
+        private int? currentUserId;
+
+        public int? CurrentUserId => User.Identity.IsAuthenticated ? (currentUserId ?? (currentUserId = int.Parse(UserManager.GetUserId(User)))) : null;
+
+       [AllowAnonymous]
        public IActionResult Index(int? id)
         {
             if (!id.HasValue)
@@ -32,8 +42,8 @@ namespace NewsPortal.Web.Controllers {
             var model = new NewsModel
             {
                 News = news,
-                Comments = comments
- //               CurrentUserId = CurrentUserId
+                Comments = comments,
+                CurrentUserId = CurrentUserId
             };
 
             return View(model);
