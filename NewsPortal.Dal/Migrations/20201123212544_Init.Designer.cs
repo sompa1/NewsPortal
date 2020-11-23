@@ -10,14 +10,14 @@ using NewsPortal.Dal;
 namespace NewsPortal.Dal.Migrations
 {
     [DbContext(typeof(NewsPortalDbContext))]
-    [Migration("20201123184025_CreateIdentitySchema")]
-    partial class CreateIdentitySchema
+    [Migration("20201123212544_Init")]
+    partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "3.1.9")
+                .HasAnnotation("ProductVersion", "3.1.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 

@@ -26,13 +26,13 @@ namespace NewsPortal.Dal.SeedServices
             {
                 var user = new User
                 {
-                    Email = "admin@newsportal.hu",
-                    Name = "Adminisztrátor",
+                    Email = "admin@newsportal.com",
+                    Name = "Administrator",
                     SecurityStamp = Guid.NewGuid().ToString(),
                     UserName = "admin"
                 };
 
-                var createResult = await _userManager.CreateAsync(user, "$Administrator123");
+                var createResult = await _userManager.CreateAsync(user, "@Admin123");
                 var addToRoleResult = await _userManager.AddToRoleAsync(user, Roles.Administrators);
 
                 if (!createResult.Succeeded || !addToRoleResult.Succeeded)

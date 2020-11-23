@@ -11,6 +11,8 @@ using NewsPortal.Dal.Entities;
 using NewsPortal.Dal.SeedInterfaces;
 using NewsPortal.Dal.SeedServices;
 using NewsPortal.Dal.Services;
+using NewsPortal.Web.Services;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace NewsPortal.Web
 {
@@ -29,11 +31,18 @@ namespace NewsPortal.Web
             services.AddIdentity<User, IdentityRole<int>>()
             .AddEntityFrameworkStores<NewsPortalDbContext>()
             .AddDefaultTokenProviders();
-            
+
             services.AddDbContext<NewsPortalDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString(nameof(NewsPortalDbContext)))).AddTransient<ISeedService, SeedService>(); ;
+
+            services.AddAuthentication().AddFacebook(facebookOptions =>
+            {
+                facebookOptions.AppId = Configuration["Authentication:Facebook:AppId"];
+                facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
+            });
 
             services.AddScoped<NewsService>();
             services.AddScoped<CommentService>();
+            services.AddScoped<IEmailSender, EmailSender>();
 
             services.AddScoped<IRoleSeedService, RoleSeedService>();
             services.AddScoped<IUserSeedService, UserSeedService>();
@@ -66,6 +75,8 @@ namespace NewsPortal.Web
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllers();
+                endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
