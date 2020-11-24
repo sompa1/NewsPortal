@@ -44,6 +44,7 @@ namespace NewsPortal.Web
 
             services.AddSignalR();
             services.AddScoped<NewsService>();
+            services.AddScoped<CategoryService>();
             services.AddScoped<CommentService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IViewRender, ViewRender.ViewRender>();
