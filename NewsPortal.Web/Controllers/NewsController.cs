@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using NewsPortal.Dal.Entities;
 using NewsPortal.Dal.Services;
+using NewsPortal.Dal.Specifications;
 using NewsPortal.Web.Models;
 using System.Linq;
 
@@ -27,10 +28,19 @@ namespace NewsPortal.Web.Controllers {
         public int? CurrentUserId => User.Identity.IsAuthenticated ? (currentUserId ?? (currentUserId = int.Parse(UserManager.GetUserId(User)))) : null;
 
        [AllowAnonymous]
-       public IActionResult Index(int? id)
+        public IActionResult Index(NewsSpecification specification)
+        {
+            if (specification?.PageNumber != null)
+                specification.PageNumber -= 1;
+
+            var news = NewsService.GetNews(specification);
+            return View(news);
+        }
+
+        public IActionResult Details(int? id)
         {
             if (!id.HasValue)
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "News");
 
             var news = NewsService.GetOneNews(id.Value);
 
@@ -48,6 +58,7 @@ namespace NewsPortal.Web.Controllers {
 
             return View(model);
         }
+
 
         [HttpPost]
         public ActionResult AddComment(int newsId, string text)
