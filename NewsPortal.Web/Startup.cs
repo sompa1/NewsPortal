@@ -13,6 +13,8 @@ using NewsPortal.Dal.SeedServices;
 using NewsPortal.Dal.Services;
 using NewsPortal.Web.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using NewsPortal.Web.Hubs;
+using NewsPortal.Web.ViewRender;
 
 namespace NewsPortal.Web
 {
@@ -40,9 +42,11 @@ namespace NewsPortal.Web
                 facebookOptions.AppSecret = Configuration["Authentication:Facebook:AppSecret"];
             });
 
+            services.AddSignalR();
             services.AddScoped<NewsService>();
             services.AddScoped<CommentService>();
             services.AddScoped<IEmailSender, EmailSender>();
+            services.AddScoped<IViewRender, ViewRender.ViewRender>();
 
             services.AddScoped<IRoleSeedService, RoleSeedService>();
             services.AddScoped<IUserSeedService, UserSeedService>();
@@ -68,6 +72,7 @@ namespace NewsPortal.Web
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
+
             app.UseRouting();
 
             app.UseAuthentication();
@@ -76,6 +81,7 @@ namespace NewsPortal.Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHub<NewsHub>("/newshub");
                 endpoints.MapRazorPages();
                 endpoints.MapControllerRoute(
                     name: "default",

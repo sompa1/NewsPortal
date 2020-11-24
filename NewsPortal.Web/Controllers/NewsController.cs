@@ -49,15 +49,12 @@ namespace NewsPortal.Web.Controllers {
             return View(model);
         }
 
-        /*
-        public IActionResult News() {
-
-            var news = NewsService.GetNews().Select(n => new NewsModel {
-                Body = n.Body
-            });
-
-            return View(news);
+        [HttpPost]
+        public ActionResult AddComment(int newsId, string text)
+        {
+            CommentService.PostComment(newsId, text, CurrentUserId.Value);
+            return RedirectToAction("Index", "News", new { id = newsId });
         }
-        */
+
     }
 }

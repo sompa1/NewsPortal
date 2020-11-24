@@ -12,6 +12,7 @@ namespace NewsPortal.Dal.Services {
 
     public class NewsService {
 
+        public static Lazy<Func<News, NewsDto>> NewsDtoSelectorFunc { get; } = new Lazy<Func<News, NewsDto>>(() => NewsDtoSelector.Compile());
         public static Expression<Func<News, NewsDto>> NewsDtoSelector { get; } = n => new NewsDto
         {
             Author = n.Author.Name,
@@ -95,19 +96,7 @@ namespace NewsPortal.Dal.Services {
             return new PagedResult<NewsDto>
             {
                 AllResultsCount = allResultsCount,
-                Results = query.ToList()
-                .Select(n => new NewsDto
-            {
-                Author = n.Author.Name,
-                AuthorId = n.AuthorId,
-                CategoryId = n.CategoryId,
-                Id = n.Id,
-                NumberOfComments = n.Comments.Count(),
-                PublishYear = n.PublishDate.Year,
-                ShortDescription = n.ShortDescription,
-                Body = n.Body,
-                Headline = n.Headline
-                }),
+                Results = query.ToList().Select(NewsDtoSelectorFunc.Value),
                 PageNumber = specification?.PageNumber,
                 PageSize = specification?.PageSize
             };
@@ -137,7 +126,7 @@ namespace NewsPortal.Dal.Services {
 
         public NewsDto GetOneNews(int id)
         {
-            return DbContext.News.Where(n => n.Id == id).Select(NewsDtoSelector).SingleOrDefault();
+            return DbContext.News.Where(n => n.Id == id).Select(NewsDtoSelector).FirstOrDefault();
         }
     }
 }

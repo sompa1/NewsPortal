@@ -1,0 +1,85 @@
+﻿@model NewsPortal.Web.Models.NewsModel
+@using NewsPortal.Dal.Dtos
+@{
+    ViewData["Title"] = Model.News.Headline;
+}
+<h2 class="lead text-primary">@Model.News.Headline</h2>
+<div class="card card-body">
+    <div class="row">
+        <div class="col-3">
+        </div>
+        <div class="col-9">
+            <p class="text-info">
+                <a asp-controller="News" asp-action="Index"
+                   asp-route-author="@Model.News.Author">@Model.News.Author</a>
+            </p>
+            <hr />
+            <p class="small">@Model.News.ShortDescription</p>
+        </div>
+    </div>
+    <div>
+        @Html.Raw(Model.News.Body)
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card card-body my-3">
+            @if (!User.Identity.IsAuthenticated)
+            {
+                <div class="text-center">
+                    To write a comment you should
+                    <a asp-page="/Account/Login" asp-area="Identity " asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">
+                        log in
+                    </a>!
+                </div>
+            }
+            else
+            {
+                <form id="new-comment-form" method="post" asp-action="AddComment">
+                    <textarea name="text" class="html-editor"></textarea>
+                    <div class="text-right mt-2">
+                        <button class="btn btn-default" value="@Model.News.Id" name="newsId">
+                            Comment
+                        </button>
+                    </div>
+                </form>
+            }
+        </div>
+        @foreach (var comment in Model.Comments)
+        {
+            <partial name="~/Views/Shared/_CommentPartial.cshtml" model="comment" />
+        }
+
+    </div>
+</div>
+@section Scripts {
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>
+        tinymce.init({ selector: '.html-editor' });
+        var connection = new signalR.HubConnectionBuilder().withUrl("/newshub").build();
+        connection.start().then(function () {
+            connection.send('JoinBookPage', @Model.News.Id).then(function () { });
+        });
+        connection.on('CommentPosted', function (htmlString) {
+            $("#comments").prepend(htmlString);
+        });
+        $('#new-comment-form').submit(function (e) {
+            e.preventDefault();
+            console.log(e);
+            connection.send('PostComment', @Model.News.Id, tinymce.activeEditor.getContent())
+                .then(function () { });
+        });
+        connection.on('CommentDeleted', function (commentId) {
+            $("#comment-" + commentId).remove();
+        });
+        $('.delete-comment').click(function (e) {
+            var commentId = e.target.attributes['data-comment-id'].value;
+            console.log(e);
+            connection.send('DeleteComment', commentId).then();
+        });
+
+    </script>
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+
+}

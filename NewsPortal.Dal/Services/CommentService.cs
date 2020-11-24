@@ -34,5 +34,32 @@ namespace NewsPortal.Dal.Services
                 .Select(CommentDtoSelector)
                 .AsEnumerable();
         }
+
+        public CommentDto PostComment(int newsId, string text, int currentUserId)
+        {
+            var comment = DbContext.Comments.Add(new Comment
+            {
+                NewsId = newsId,
+                CreationDate = DateTimeOffset.Now,
+                Text = text,
+                UserId = currentUserId
+            });
+            DbContext.SaveChanges();
+
+            return DbContext.Comments
+            .Where(c => c.Id == comment.Entity.Id)
+            .Select(CommentDtoSelector)
+            .Single();
+        }
+        public CommentDto DeleteComment(int commentId, int currentUserId)
+        {
+            var comment = DbContext.Comments
+            .Where(c => c.Id == commentId && currentUserId == c.UserId)
+            .Select(CommentDtoSelector)
+            .Single();
+            DbContext.Remove(new Comment { Id = commentId });
+            DbContext.SaveChanges();
+            return comment;
+        }
     }
 }
