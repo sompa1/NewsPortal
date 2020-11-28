@@ -62,7 +62,7 @@ namespace NewsPortal.Dal.Services
         public CommentDto DeleteComment(int commentId, int currentUserId)
         {
             var comment = DbContext.Comments
-            .Where(c => c.Id == commentId) // TODO: check userid
+            .Where(c => c.Id == commentId && c.UserId == currentUserId)
             .Select(CommentDtoSelector)
             .Single();
             DbContext.Remove(new Comment { Id = commentId });
