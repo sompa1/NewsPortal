@@ -26,13 +26,20 @@ namespace NewsPortal.Dal.Services
             UserId = c.UserId
         };
 
-        public IEnumerable<CommentDto> GetComments(int id)
+        public IEnumerable<CommentDto> GetComments(int newsId)
         {
             return DbContext.Comments
-                .Where(c => c.NewsId == id)
+                .Where(c => c.NewsId == newsId)
                 .OrderByDescending(c => c.Id)
                 .Select(CommentDtoSelector)
                 .AsEnumerable();
+        }
+
+        public CommentDto GetComment(int id)
+        {
+            return DbContext.Comments
+                .Where(c => c.Id == id)
+                .Select(CommentDtoSelector).FirstOrDefault();
         }
 
         public CommentDto PostComment(int newsId, string text, int currentUserId)
@@ -51,10 +58,11 @@ namespace NewsPortal.Dal.Services
             .Select(CommentDtoSelector)
             .Single();
         }
+
         public CommentDto DeleteComment(int commentId, int currentUserId)
         {
             var comment = DbContext.Comments
-            .Where(c => c.Id == commentId && currentUserId == c.UserId)
+            .Where(c => c.Id == commentId) // TODO: check userid
             .Select(CommentDtoSelector)
             .Single();
             DbContext.Remove(new Comment { Id = commentId });

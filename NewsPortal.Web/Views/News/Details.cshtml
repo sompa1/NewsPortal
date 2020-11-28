@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = Model.News.Headline;
 }
-<h2 class="lead text-primary">@Model.News.Headline</h2>
+<h2 class="lead text-primary">@Html.Raw(@Model.News.Headline)</h2>
 <div class="card card-body">
     <div class="row">
         <div class="col-3">
@@ -14,7 +14,7 @@
                    asp-route-author="@Model.News.Author">@Model.News.Author</a>
             </p>
             <hr />
-            <p class="small">@Model.News.ShortDescription</p>
+            <p class="small">@Html.Raw(@Model.News.ShortDescription)</p>
         </div>
     </div>
     <div>
@@ -29,7 +29,7 @@
             {
                 <div class="text-center">
                     To write a comment you should
-                    <a asp-page="/Account/Login" asp-area="Identity " asp-route-returnUrl="@Context.Request.Path@Context.Request.QueryString">
+                    <a asp-area="Identity" asp-page="/Account/Login">
                         log in
                     </a>!
                 </div>

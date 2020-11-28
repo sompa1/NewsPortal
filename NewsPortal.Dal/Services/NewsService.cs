@@ -124,9 +124,25 @@ namespace NewsPortal.Dal.Services {
             }).ToList();
         }
 
+        public NewsDto AddNews(int authorId, string headline, string shortDescription, string body)
+        {
+            var news = DbContext.News.Add(new News {
+                AuthorId = 1,
+                Headline = headline,
+                ShortDescription = shortDescription,
+                Body = body,
+                CategoryId = 1,
+                PublishDate = DateTime.Now
+                // TODO: replace placeholder values
+            });
+            DbContext.SaveChanges();
+
+            return DbContext.News.Where(n => n.Id == news.Entity.Id).Select(NewsDtoSelector).Single();
+        }
+
         public NewsDto GetOneNews(int id)
         {
-            return DbContext.News.Where(n => n.Id == id).Select(NewsDtoSelector).FirstOrDefault();
+            return DbContext.News.Where(n => n.Id == id).Select(NewsDtoSelector).Single();
         }
     }
 }

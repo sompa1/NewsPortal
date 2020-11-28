@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NewsPortal.Dal.Dtos;
 using NewsPortal.Dal.Entities;
 using NewsPortal.Dal.Services;
 using NewsPortal.Dal.Specifications;
@@ -27,7 +28,7 @@ namespace NewsPortal.Web.Controllers {
 
         public int? CurrentUserId => User.Identity.IsAuthenticated ? (currentUserId ?? (currentUserId = int.Parse(UserManager.GetUserId(User)))) : null;
 
-       [AllowAnonymous]
+        [AllowAnonymous]
         public IActionResult Index(NewsSpecification specification)
         {
             if (specification?.PageNumber != null)
@@ -36,7 +37,8 @@ namespace NewsPortal.Web.Controllers {
             var news = NewsService.GetNews(specification);
             return View(news);
         }
-
+        
+        [AllowAnonymous]
         public IActionResult Details(int? id)
         {
             if (!id.HasValue)
@@ -59,13 +61,28 @@ namespace NewsPortal.Web.Controllers {
             return View(model);
         }
 
+        [AllowAnonymous]
+        public IActionResult Write() {
+            return View();
+        }
+        
+        [HttpPost]
+        public ActionResult AddNews(string headline, string shortDescription, string body)
+        {
+            var news = NewsService.AddNews(0, headline, shortDescription, body);
+            return RedirectToAction("Details", "News", new { id = news.Id });
+        }
 
         [HttpPost]
         public ActionResult AddComment(int newsId, string text)
         {
             CommentService.PostComment(newsId, text, CurrentUserId.Value);
-            return RedirectToAction("Index", "News", new { id = newsId });
+            return RedirectToAction("Details", "News", new { id = newsId });
         }
 
+        public ActionResult DeleteComment(int id) {
+            CommentDto comment = CommentService.DeleteComment(id, CurrentUserId.Value);
+            return RedirectToAction("Details", "News", new { id = comment.NewsId });
+        }
     }
 }
