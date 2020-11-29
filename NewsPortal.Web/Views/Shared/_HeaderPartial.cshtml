@@ -8,7 +8,7 @@
     @if (SignInManager.IsSignedIn(User))
     {
 
-        @if (User.IsInRole("Author"))
+        @if (User.IsInRole("Authors"))
         {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Write">Write</a>
