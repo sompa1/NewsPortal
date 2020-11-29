@@ -5,11 +5,14 @@
 @inject UserManager<User> UserManager
 
 <ul class="navbar-nav flex-grow-1">
-    @if (SignInManager.IsSignedIn(User))
-    {
-
-        @if (User.IsInRole("Authors"))
-        {
+    @if (SignInManager.IsSignedIn(User)) {
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Index">News</a>
+        </li>
+        @if (User.IsInRole("Authors")) {
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Write">Write</a>
             </li>
@@ -20,13 +23,11 @@
                 <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Edit">Edit home</a>
             </li>
         }
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-controller="News" asp-action="Index">News</a>
-        </li>
-
+        @if (User.IsInRole("Administrators")) {
+            <li class="nav-item">
+                <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="List">Manage users</a>
+            </li>
+        }
         <li class="nav-item">
             <a id="manage" class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserName(User)!</a>
         </li>

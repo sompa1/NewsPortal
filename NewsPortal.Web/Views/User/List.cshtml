@@ -1,0 +1,39 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using NewsPortal.Model
+
+@inject UserManager<User> UserManager
+
+@model NewsPortal.Web.Models.UserListModel
+@foreach (var user in Model.Users) {
+    <div class="card mb-2" id="user-@user.Id">
+        <div class="card-header">
+            <h4 class="card-title">@user.UserName</h4>
+            <span class="text-muted">@user.Email</span><br/>
+            Roles: 
+            @foreach (var role in await UserManager.GetRolesAsync(user)) {
+                @role
+            }
+            <br/>
+            
+        </div>
+        <div class="card-body">
+            <a asp-controller="User" asp-action="GrantAuthorRole" asp-route-id="@user.Id">
+                Grant Author role
+            </a><br />
+            <a asp-controller="User" asp-action="RevokeAuthorRole" asp-route-id="@user.Id">
+                Revoke Author role
+            </a><br />
+            <a asp-controller="User" asp-action="GrantAdminRole" asp-route-id="@user.Id">
+                Grant Admin role
+            </a><br />
+            <a asp-controller="User" asp-action="RevokeAdminRole" asp-route-id="@user.Id">
+                Revoke Admin role
+            </a><br />
+            @if (user.Id != Model.CurrentUserId) {
+                <a asp-controller="User" asp-action="DeleteUser" asp-route-id="@user.Id">
+                    Delete User
+                </a>
+            }
+        </div>
+        </div>
+    }
