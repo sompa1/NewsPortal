@@ -64,7 +64,6 @@ namespace NewsPortal.Dal.Services
         {
             var comment = await _dbContext.Comments
             .Where(c => c.Id == commentId && currentUserId == c.UserId)
-            .Select(CommentDtoSelector)
             .SingleAsync();
             _dbContext.Remove(comment);
             await _dbContext.SaveChangesAsync();
