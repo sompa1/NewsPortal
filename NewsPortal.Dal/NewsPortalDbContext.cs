@@ -2,10 +2,6 @@
 using NewsPortal.Model;
 using NewsPortal.Dal.EntityConfigurations;
 using NewsPortal.Dal.SeedInterfaces;
-using NewsPortal.Dal.SeedServices;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 
@@ -20,7 +16,6 @@ namespace NewsPortal.Dal
         }
         public NewsPortalDbContext(DbContextOptions options) : base(options) { }
         public DbSet<News> News { get; set; }
-        public DbSet<Author> Authors { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Comment> Comments { get; set; }
 

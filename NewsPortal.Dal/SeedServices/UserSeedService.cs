@@ -32,7 +32,7 @@ namespace NewsPortal.Dal.SeedServices
                     UserName = "admin",
                 };
 
-                var author = new Author
+                var author = new User
                 {
                     Email = "author@newsportal.com",
                     Name = "John Doe",

@@ -9,6 +9,6 @@ namespace NewsPortal.Model
     {
         public string Name { get; set; }
         public ICollection<Comment> Comments { get; set; }
-
+        public ICollection<News> News { get; set; }
     }
 }

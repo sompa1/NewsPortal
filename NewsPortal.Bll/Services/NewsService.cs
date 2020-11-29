@@ -21,7 +21,7 @@ namespace NewsPortal.Bll.Services
         public static Lazy<Func<News, NewsDto>> NewsDtoSelectorFunc { get; } = new Lazy<Func<News, NewsDto>>(() => NewsDtoSelector.Compile());
         public static Expression<Func<News, NewsDto>> NewsDtoSelector { get; } = n => new NewsDto
         {
-            Author = n.Author.Name,
+            Author = n.Author.UserName,
             AuthorId = n.AuthorId,
             CategoryId = n.CategoryId,
             Category = n.Category.Name,
@@ -145,7 +145,6 @@ namespace NewsPortal.Bll.Services
                 CategoryId = categoryId,
                 PublishDate = DateTime.Now,
                 ExpirationDate = expirationDate
-                // TODO: replace placeholder values
             });
             await _dbContext.SaveChangesAsync();
 

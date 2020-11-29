@@ -81,7 +81,6 @@ namespace NewsPortal.Web.Controllers
         [HttpPost]
         public async Task<ActionResult> AddNews(CreateNewsModel model)
         {
-            var list = _categoryService.GetAllCategory();
             var news = await _newsService.AddNews(CurrentUserId.Value, model.Headline, model.ShortDescription, model.Body, model.CategoryId, model.ExpirationDate);
             return RedirectToAction("Details", "News", new { id = news.Id });
         }
