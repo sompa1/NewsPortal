@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewsPortal.Bll.Interfaces;
@@ -10,22 +11,35 @@ namespace NewsPortal.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly INewsService _newsService;
+        private readonly IHomePageService _homePageService;
 
-
-        public HomeController(INewsService newsService)
+        public HomeController(IHomePageService homePageService)
         {
-            _newsService = newsService;
+            _homePageService = homePageService;
         }
 
+        [HttpGet]
         [AllowAnonymous]
-        public IActionResult Index( NewsSpecification specification)
+        public async Task<IActionResult> Index()
         {
-            if (specification?.PageNumber != null)
-                specification.PageNumber -= 1;
+            var content = await _homePageService.GetHomePageContent();
+            return View(new HomeViewModel() { Content = content });
+        }
 
-            var news = _newsService.GetNews(specification);
-            return View(news);
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> Edit()
+        {
+            var content = await _homePageService.GetHomePageContent();
+            return View(new HomeViewModel() { Content = content });
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Edit(HomeViewModel model)
+        {
+            await _homePageService.UpdateHomePage(model.Content);
+            return RedirectToAction("Index");
         }
 
 

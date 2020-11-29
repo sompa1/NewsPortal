@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using NewsPortal.Bll.Dtos;
+using NewsPortal.Bll.Interfaces;
 using NewsPortal.Dal;
 using NewsPortal.Model;
 using System;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace NewsPortal.Bll.Services
 {
-    public class HomePageService
+    public class HomePageService : IHomePageService
     {
 
         private readonly NewsPortalDbContext _dbContext;
@@ -18,16 +19,15 @@ namespace NewsPortal.Bll.Services
         {
             _dbContext = dbContext;
         }
-        public void UpdateHomePage(string content)
+        public async Task UpdateHomePage(string content)
         {
-
             var homePageContent = new HomePageContent()
             {
                 Id = 1,
-                Content = @content
+                Content = content
             };
             _dbContext.HomePageContent.Update(homePageContent);
-            _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task<string> GetHomePageContent()

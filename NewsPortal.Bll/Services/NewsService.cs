@@ -24,6 +24,7 @@ namespace NewsPortal.Bll.Services
             Author = n.Author.Name,
             AuthorId = n.AuthorId,
             CategoryId = n.CategoryId,
+            Category = n.Category.Name,
             Id = n.Id,
             NumberOfComments = n.Comments.Count(),
             PublishYear = n.PublishDate.Year,
@@ -53,10 +54,6 @@ namespace NewsPortal.Bll.Services
 
             if (!string.IsNullOrWhiteSpace(specification?.Author))
                 query = query.Where(n => n.Author.Name.Contains(specification.Author));
-            if (specification?.AuthorId != null)
-                query = query.Where(n => n.AuthorId == specification.AuthorId);
-            if (specification?.Category != null)
-                query = query.Where(n => n.Category.Name.Contains(specification.Category));
             if (specification?.CategoryId != null)
                 query = query.Where(n => n.CategoryId == specification.CategoryId);
             if (!string.IsNullOrWhiteSpace(specification?.Headline))
@@ -128,6 +125,7 @@ namespace NewsPortal.Bll.Services
                 Author = n.Author.Name,
                 AuthorId = n.AuthorId,
                 CategoryId = n.CategoryId,
+                Category = n.Category.Name,
                 Body = n.Body,
                 NumberOfComments = n.Comments.Count(),
                 ShortDescription = n.ShortDescription,
@@ -136,7 +134,7 @@ namespace NewsPortal.Bll.Services
             }).ToList();
         }
 
-        public async Task<NewsDto> AddNews(int authorId, string headline, string shortDescription, string body)
+        public async Task<NewsDto> AddNews(int authorId, string headline, string shortDescription, string body, int categoryId, DateTime expirationDate)
         {
             var news = _dbContext.News.Add(new News
             {
@@ -144,9 +142,9 @@ namespace NewsPortal.Bll.Services
                 Headline = headline,
                 ShortDescription = shortDescription,
                 Body = body,
-                CategoryId = 1, //TODO
+                CategoryId = categoryId,
                 PublishDate = DateTime.Now,
-                ExpirationDate = DateTime.Now.AddYears(2)
+                ExpirationDate = expirationDate
                 // TODO: replace placeholder values
             });
             await _dbContext.SaveChangesAsync();

@@ -13,6 +13,7 @@ namespace NewsPortal.Bll.Dtos {
         public int AuthorId { get; set; }
         public string Author { get; set; }
         public int CategoryId { get; set; }
+        public string Category { get; set; }
         public int NumberOfComments { get; set; }
         public int PublishYear { get; set; }
 

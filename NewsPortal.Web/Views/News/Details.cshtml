@@ -1,5 +1,4 @@
 ﻿@model NewsPortal.Web.Models.NewsModel
-@using NewsPortal.Bll.Dtos
 @{
     ViewData["Title"] = Model.News.Headline;
 }
@@ -10,8 +9,13 @@
         </div>
         <div class="col-9">
             <p class="text-info">
-                <a asp-controller="News" asp-action="Details"
-                   asp-route-author="@Model.News.Author">@Model.News.Author</a>
+                @Model.News.Author
+            </p>
+            <p class="text-info">
+                @Model.News.PublishYear
+            </p>
+            <p class="text-info">
+                @Model.News.Category
             </p>
             <hr />
             <p class="small">@Html.Raw(@Model.News.ShortDescription)</p>

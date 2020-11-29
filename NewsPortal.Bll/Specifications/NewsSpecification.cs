@@ -10,9 +10,7 @@ namespace NewsPortal.Dal.Specifications {
         public int? PageSize { get; set; } = 4;
 
         public string Author { get; set; }
-        public int? AuthorId { get; set; }
         public string Headline { get; set; }
-        public string Category { get; set; }
         public int? CategoryId { get; set; }
         public int? MinNumberOfComments { get; set; }
         public int? MaxNumberOfComments { get; set; }

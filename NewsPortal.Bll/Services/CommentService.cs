@@ -32,7 +32,7 @@ namespace NewsPortal.Dal.Services
 
         public IEnumerable<CommentDto> GetComments(int newsId)
         {
-            return _dbContext.Comments
+            return _dbContext.Comments.Include(c => c.User)
                 .Where(c => c.NewsId == newsId)
                 .OrderByDescending(c => c.Id)
                 .Select(CommentDtoSelector);
@@ -40,7 +40,7 @@ namespace NewsPortal.Dal.Services
 
         public Task<CommentDto> GetComment(int id)
         {
-            return _dbContext.Comments
+            return _dbContext.Comments.Include(c => c.User)
                 .Select(CommentDtoSelector).SingleAsync(c => c.Id == id);
         }
 

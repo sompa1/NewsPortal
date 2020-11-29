@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using NewsPortal.Bll.Dtos;
 using NewsPortal.Bll.Interfaces;
 using NewsPortal.Dal;
@@ -33,6 +34,18 @@ namespace NewsPortal.Bll.Services
                 Id = c.Id,
                 Name = c.Name
             }).ToListAsync();
+        }
+
+        public IEnumerable<SelectListItem> GetAllCategory()
+        {
+            IEnumerable<SelectListItem> list = _dbContext.Categories.Select(c => new SelectListItem
+            {
+                Selected = false,
+                Text = c.Name,
+                Value = (c.Id).ToString()
+            });
+
+            return list;
         }
     }
 }

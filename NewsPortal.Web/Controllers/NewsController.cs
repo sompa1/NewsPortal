@@ -4,24 +4,30 @@ using Microsoft.AspNetCore.Mvc;
 using NewsPortal.Bll.Dtos;
 using NewsPortal.Bll.Interfaces;
 using NewsPortal.Model;
-using NewsPortal.Dal.Services;
 using NewsPortal.Dal.Specifications;
 using NewsPortal.Web.Models;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
 
-namespace NewsPortal.Web.Controllers {
+namespace NewsPortal.Web.Controllers
+{
 
-    public class NewsController : Controller {
+    public class NewsController : Controller
+    {
 
         private readonly INewsService _newsService;
         private readonly ICommentService _commentService;
+        private readonly ICategoryService _categoryService;
         private readonly UserManager<User> _userManager;
 
-        public NewsController(INewsService newsService, ICommentService commentService, UserManager<User> userManager) {
+        public NewsController(INewsService newsService, ICommentService commentService, ICategoryService categoryService, UserManager<User> userManager)
+        {
             _userManager = userManager;
             _newsService = newsService;
             _commentService = commentService;
+            _categoryService = categoryService;
         }
 
         private int? currentUserId;
@@ -30,15 +36,17 @@ namespace NewsPortal.Web.Controllers {
         public int? CurrentUserId => User.Identity.IsAuthenticated ? (currentUserId ?? (currentUserId = int.Parse(_userManager.GetUserId(User)))) : null;
 
         [AllowAnonymous]
-        public IActionResult Index(NewsSpecification specification)
+        public IActionResult Index(NewsIndexModel model)
         {
-            if (specification?.PageNumber != null)
-                specification.PageNumber -= 1;
+            var list = _categoryService.GetAllCategory();
+            model.Categories = list;
+            if (model.Specification?.PageNumber != null)
+                model.Specification.PageNumber -= 1;
 
-            var news = _newsService.GetNews(specification);
-            return View(news);
+            model.News = _newsService.GetNews(model.Specification);
+            return View(model);
         }
-        
+
         [AllowAnonymous]
         public async Task<IActionResult> Details(int? id)
         {
@@ -63,15 +71,18 @@ namespace NewsPortal.Web.Controllers {
         }
 
         [Authorize(Roles = "Authors")]
-        public IActionResult Write() {
-            return View();
+        public IActionResult Write()
+        {
+            var list = _categoryService.GetAllCategory();
+            return View(new CreateNewsModel() { Categories = list });
         }
 
         [Authorize(Roles = "Authors")]
         [HttpPost]
-        public async Task<ActionResult> AddNews(string headline, string shortDescription, string body)
+        public async Task<ActionResult> AddNews(CreateNewsModel model)
         {
-            var news = await _newsService.AddNews(CurrentUserId.Value, headline, shortDescription, body);
+            var list = _categoryService.GetAllCategory();
+            var news = await _newsService.AddNews(CurrentUserId.Value, model.Headline, model.ShortDescription, model.Body, model.CategoryId, model.ExpirationDate);
             return RedirectToAction("Details", "News", new { id = news.Id });
         }
 
@@ -84,9 +95,11 @@ namespace NewsPortal.Web.Controllers {
         }
 
         [Authorize]
-        public async Task<ActionResult> DeleteComment(int id) {
+        public async Task<ActionResult> DeleteComment(int id)
+        {
             var newsId = await _commentService.DeleteComment(id, CurrentUserId.Value);
             return RedirectToAction("Details", "News", new { id = newsId });
         }
+
     }
 }

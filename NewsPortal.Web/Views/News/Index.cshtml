@@ -1,33 +1,71 @@
-﻿@model NewsPortal.Bll.Dtos.PagedResult<NewsPortal.Bll.Dtos.NewsDto>
+﻿@model NewsIndexModel
 @{
     ViewData["Title"] = "Index";
     Dictionary<string, string> queryParams = Context.Request.Query.ToDictionary(q => q.Key, q => q.Value.ToString());
     queryParams.TryAdd("pageNumber", String.Empty);
 }
-@if (Model.AllResultsCount != null)
+<form id="news-form" method="get" asp-controller="News" asp-action="Index">
+    @Html.DropDownListFor(x => x.Specification.CategoryId, Model.Categories)
+    <div>
+        <label asp-for="@Model.Specification.Headline">Headline of the article</label>
+        <input asp-for="@Model.Specification.Headline" class="form-control" type="text">
+        <span asp-validation-for="@Model.Specification.Headline" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="@Model.Specification.Author">Headline of the article</label>
+        <input asp-for="@Model.Specification.Author" class="form-control" type="text">
+        <span asp-validation-for="@Model.Specification.Author" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="@Model.Specification.MinNumberOfComments">Headline of the article</label>
+        <input asp-for="@Model.Specification.MinNumberOfComments" class="form-control" type="number">
+        <span asp-validation-for="@Model.Specification.MinNumberOfComments" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="@Model.Specification.MaxNumberOfComments">Headline of the article</label>
+        <input asp-for="@Model.Specification.MaxNumberOfComments" class="form-control" type="number">
+        <span asp-validation-for="@Model.Specification.MaxNumberOfComments" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="@Model.Specification.MinPublishYear">Headline of the article</label>
+        <input asp-for="@Model.Specification.MinPublishYear" class="form-control" type="number">
+        <span asp-validation-for="@Model.Specification.MinPublishYear" class="text-danger"></span>
+    </div>
+    <div>
+        <label asp-for="@Model.Specification.MaxPublishYear">Headline of the article</label>
+        <input asp-for="@Model.Specification.MaxPublishYear" class="form-control" type="number">
+        <span asp-validation-for="@Model.Specification.MaxPublishYear" class="text-danger"></span>
+    </div>
+    <div class="text-right mt-2">
+        <button type="submit" class="btn btn-default">
+            Search
+        </button>
+    </div>
+</form>
+@if (Model.News.AllResultsCount != null)
 {
     <div class="card text-center border-0">
         <div class="card-body">
             <div class="mb-1">
-                @Model.AllResultsCount news found
+                @Model.News.AllResultsCount news found
             </div>
-            @if ((Model.PageSize ?? 0) != 0)
+            @if ((Model.News.PageSize ?? 0) != 0)
             {
-                var totalPages = (int)Math.Ceiling((double)Model.AllResultsCount.Value / (double)Model.PageSize.Value);
+                var totalPages = (int)Math.Ceiling((double)Model.News.AllResultsCount.Value / (double)Model.News.PageSize.Value);
                 <nav>
                     <ul class="pagination justify-content-center">
-                        @if (Model.PageNumber != 0)
+                        @if (Model.News.PageNumber != 0)
                         {
                             <li class="page-item">
-                                @{ queryParams["pageNumber"] = Model.PageNumber.ToString(); }
+                                @{ queryParams["pageNumber"] = Model.News.PageNumber.ToString(); }
                                 <a asp-all-route-data="queryParams" class="page-link">
                                     <span>&laquo;</span>
                                 </a>
                             </li>
                         }
-                        @for (var pageNumber = Math.Max(0, Model.PageNumber.Value - 2); pageNumber < Math.Min(totalPages, Model.PageNumber.Value + 3); pageNumber++)
+                        @for (var pageNumber = Math.Max(0, Model.News.PageNumber.Value - 2); pageNumber < Math.Min(totalPages, Model.News.PageNumber.Value + 3); pageNumber++)
                         {
-                            @if (Model.PageNumber == pageNumber)
+                            @if (Model.News.PageNumber == pageNumber)
                             {
                                 <li class="page-item active">
                                     <a class="page-link">
@@ -45,10 +83,10 @@
                                 </li>
                             }
                         }
-                        @if (Model.PageNumber < Math.Ceiling((decimal)(Model.AllResultsCount.Value / Model.PageSize.Value)) - 1)
+                        @if (Model.News.PageNumber < Math.Ceiling((decimal)(Model.News.AllResultsCount.Value / Model.News.PageSize.Value)) - 1)
                         {
                             <li class="page-item">
-                                @{ queryParams["pageNumber"] = (Model.PageNumber + 2).ToString(); }
+                                @{ queryParams["pageNumber"] = (Model.News.PageNumber + 2).ToString(); }
                                 <a asp-all-route-data="queryParams" class="page-link">
                                     <span aria-hidden="true">&raquo;</span>
                                 </a>
@@ -60,4 +98,4 @@
         </div>
     </div>
 }
-<vc:news-list news="Model "></vc:news-list>
+<vc:news-list news="Model.News"></vc:news-list>

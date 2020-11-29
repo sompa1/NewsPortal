@@ -5,16 +5,15 @@
     </h4>
     <div class="card-body">
         <div class="container-fluid">
-            <div class="row">
-                <div class="text-center w-100">
-                    <p class="text-info">@Model.Author</p>
+                <div class="row">
+                    <div class="text-center w-100">
+                        <p class="text-info">@Model.Author</p>
+                    </div>
+                    <hr />
+                    <p class="small">
+                        @Html.Raw(Model.ShortDescription)
+                    </p>
                 </div>
-                <hr />
-                <p class="small">
-                    @Html.Raw(Model.ShortDescription)
-                    <!--Model.ShortDescription.Substring(0, Math.Min(300, Model.ShortDescription.Length))-->
-                </p>
             </div>
         </div>
-    </div>
 </div>

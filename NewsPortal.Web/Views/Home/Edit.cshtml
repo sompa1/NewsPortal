@@ -1,0 +1,22 @@
+﻿@model NewsPortal.Web.Models.HomeViewModel
+<div class="card card-body">
+    <form id="new-news-form" method="post" asp-controller="Home" asp-action="Edit">
+        <div>
+            <label asp-for="@Model.Content">Content</label>
+            <textarea asp-for="@Model.Content" class="form-control html-editor"></textarea>
+            <span asp-validation-for="@Model.Content" class="text-danger"></span>
+        </div>
+        <div class="text-right mt-2">
+            <button type="submit" class="btn btn-default">
+                Publish
+            </button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script src="//cdn.tinymce.com/4/tinymce.min.js"></script>
+    <script>
+        tinymce.init({ selector: '.html-editor' });
+    </script>
+}
