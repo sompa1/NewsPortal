@@ -56,7 +56,7 @@
         <div class="card-header">
             <h3 class="card-title">@comment.User</h3>
             <span class="text-muted">
-                @comment.CreationDate.ToLocalTime().ToString("yyyy. MMM dd.hh: mm:ss")
+                @comment.CreationDate.ToLocalTime().ToString("yyyy. MMM dd. hh:mm:ss")
             </span>
             @if (comment.UserId == Model.CurrentUserId)
             {
