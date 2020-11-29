@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NewsPortal.Dal.Dtos
+namespace NewsPortal.Bll.Dtos
 {
     public class CategoryDto
     {

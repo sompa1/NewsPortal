@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace NewsPortal.Dal.Entities
+namespace NewsPortal.Model
 {
     public class News
     {
@@ -24,5 +24,7 @@ namespace NewsPortal.Dal.Entities
         public ICollection<Comment> Comments { get; set; }
 
         public DateTime PublishDate { get; set; }
+
+        public DateTime ExpirationDate { get; set; }
     }
 }

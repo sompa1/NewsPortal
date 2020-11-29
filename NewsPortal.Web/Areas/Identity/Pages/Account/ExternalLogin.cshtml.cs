@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using NewsPortal.Dal.Entities;
+using NewsPortal.Model;
 
 namespace NewsPortal.Web.Areas.Identity.Pages.Account
 {

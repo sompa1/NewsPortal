@@ -1,4 +1,4 @@
-﻿@model NewsPortal.Dal.Dtos.PagedResult<NewsPortal.Dal.Dtos.NewsDto>
+﻿@model NewsPortal.Bll.Dtos.PagedResult<NewsPortal.Bll.Dtos.NewsDto>
 <div class="row">
     @foreach (var (news, i) in Model.Results.Select((news, i) => (news: news, i: i + 1)))
     {

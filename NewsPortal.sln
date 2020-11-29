@@ -3,9 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30611.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsPortal.Web", "NewsPortal.Web\NewsPortal.Web.csproj", "{00A4FD9C-6D2E-40D7-989F-CDF583B7CB97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsPortal.Web", "NewsPortal.Web\NewsPortal.Web.csproj", "{00A4FD9C-6D2E-40D7-989F-CDF583B7CB97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsPortal.Dal", "NewsPortal.Dal\NewsPortal.Dal.csproj", "{73C293CA-B163-4695-972F-7018485553B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NewsPortal.Dal", "NewsPortal.Dal\NewsPortal.Dal.csproj", "{73C293CA-B163-4695-972F-7018485553B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsPortal.Bll", "NewsPortal.Bll\NewsPortal.Bll.csproj", "{1F82605F-8BF5-40E1-B7D4-6296CCA40C85}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NewsPortal.Model", "NewsPortal.Model\NewsPortal.Model.csproj", "{5F0FEFB1-6C45-4E00-87E4-F6A8AD4AAD80}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +25,14 @@ Global
 		{73C293CA-B163-4695-972F-7018485553B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73C293CA-B163-4695-972F-7018485553B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73C293CA-B163-4695-972F-7018485553B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F82605F-8BF5-40E1-B7D4-6296CCA40C85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F82605F-8BF5-40E1-B7D4-6296CCA40C85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F82605F-8BF5-40E1-B7D4-6296CCA40C85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F82605F-8BF5-40E1-B7D4-6296CCA40C85}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5F0FEFB1-6C45-4E00-87E4-F6A8AD4AAD80}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5F0FEFB1-6C45-4E00-87E4-F6A8AD4AAD80}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5F0FEFB1-6C45-4E00-87E4-F6A8AD4AAD80}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5F0FEFB1-6C45-4E00-87E4-F6A8AD4AAD80}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

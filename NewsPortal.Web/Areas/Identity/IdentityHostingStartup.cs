@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using NewsPortal.Dal;
-using NewsPortal.Dal.Entities;
+using NewsPortal.Model;
 
 [assembly: HostingStartup(typeof(NewsPortal.Web.Areas.Identity.IdentityHostingStartup))]
 namespace NewsPortal.Web.Areas.Identity

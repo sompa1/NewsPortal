@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
 
-namespace NewsPortal.Dal.Entities
+namespace NewsPortal.Model
 {
     public class User : IdentityUser<int>
     {

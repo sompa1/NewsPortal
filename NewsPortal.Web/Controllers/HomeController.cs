@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using NewsPortal.Bll.Interfaces;
 using NewsPortal.Dal.Services;
 using NewsPortal.Dal.Specifications;
 using NewsPortal.Web.Models;
@@ -9,10 +10,10 @@ namespace NewsPortal.Web.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly NewsService _newsService;
+        private readonly INewsService _newsService;
 
 
-        public HomeController(NewsService newsService)
+        public HomeController(INewsService newsService)
         {
             _newsService = newsService;
         }

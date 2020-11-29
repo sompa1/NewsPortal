@@ -1,25 +1,30 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NewsPortal.Dal.Dtos;
-using NewsPortal.Dal.Entities;
+using NewsPortal.Bll.Dtos;
+using NewsPortal.Bll.Interfaces;
+using NewsPortal.Dal;
+using NewsPortal.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
-namespace NewsPortal.Dal.Services
+namespace NewsPortal.Bll.Services
 {
-    public class CategoryService
+    public class CategoryService : ICategoryService
     {
-        private NewsPortalDbContext DbContext { get; }
+        private readonly NewsPortalDbContext _dbContext;
+
         public CategoryService(NewsPortalDbContext dbContext)
         {
-            DbContext = dbContext;
+            _dbContext = dbContext;
         }
-        public IEnumerable<CategoryDto> GetCategories()
+
+        public Task<List<CategoryDto>> GetCategories()
         {
             //var allCategories = DbContext.Categories.ToList();
 
-            IQueryable<Category> query = DbContext
+            IQueryable<Category> query = _dbContext
                 .Categories.Include(c => c.News);
 
 
@@ -27,7 +32,7 @@ namespace NewsPortal.Dal.Services
             {
                 Id = c.Id,
                 Name = c.Name
-            }).ToList();
+            }).ToListAsync();
         }
     }
 }

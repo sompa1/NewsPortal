@@ -7,7 +7,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Identity;
 //using Microsoft.AspNetCore.Identity.UI.Services;
 using NewsPortal.Dal;
-using NewsPortal.Dal.Entities;
+using NewsPortal.Model;
 using NewsPortal.Dal.SeedInterfaces;
 using NewsPortal.Dal.SeedServices;
 using NewsPortal.Dal.Services;
@@ -15,6 +15,8 @@ using NewsPortal.Web.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using NewsPortal.Web.Hubs;
 using NewsPortal.Web.ViewRender;
+using NewsPortal.Bll.Interfaces;
+using NewsPortal.Bll.Services;
 
 namespace NewsPortal.Web
 {
@@ -43,9 +45,9 @@ namespace NewsPortal.Web
             });
 
             services.AddSignalR();
-            services.AddScoped<NewsService>();
-            services.AddScoped<CategoryService>();
-            services.AddScoped<CommentService>();
+            services.AddScoped<INewsService, NewsService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICommentService, CommentService>();
             services.AddScoped<IEmailSender, EmailSender>();
             services.AddScoped<IViewRender, ViewRender.ViewRender>();
 

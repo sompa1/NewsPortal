@@ -7,7 +7,7 @@ namespace NewsPortal.Dal.Specifications {
     public class NewsSpecification
     {
         public int? PageNumber { get; set; }
-        public int? PageSize { get; set; } = 24;
+        public int? PageSize { get; set; } = 4;
 
         public string Author { get; set; }
         public int? AuthorId { get; set; }

@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
-using NewsPortal.Dal.Entities;
+using NewsPortal.Model;
 
 namespace NewsPortal.Web.Areas.Identity.Pages.Account
 {

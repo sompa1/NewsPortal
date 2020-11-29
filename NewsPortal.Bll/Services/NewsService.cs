@@ -1,16 +1,22 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NewsPortal.Dal.Dtos;
-using NewsPortal.Dal.Entities;
+using NewsPortal.Bll.Interfaces;
+using NewsPortal.Bll.Dtos;
+using NewsPortal.Model;
 using NewsPortal.Dal.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
+using NewsPortal.Dal;
 
-namespace NewsPortal.Dal.Services {
+namespace NewsPortal.Bll.Services
+{
 
-    public class NewsService {
+    public class NewsService : INewsService
+    {
+        private readonly NewsPortalDbContext _dbContext;
 
         public static Lazy<Func<News, NewsDto>> NewsDtoSelectorFunc { get; } = new Lazy<Func<News, NewsDto>>(() => NewsDtoSelector.Compile());
         public static Expression<Func<News, NewsDto>> NewsDtoSelector { get; } = n => new NewsDto
@@ -25,20 +31,22 @@ namespace NewsPortal.Dal.Services {
             Headline = n.Headline,
             Body = n.Body
         };
-        public NewsService(NewsPortalDbContext dbContext) {
-            DbContext = dbContext;
+
+        public NewsService(NewsPortalDbContext dbContext)
+        {
+            _dbContext = dbContext;
         }
 
-        public NewsPortalDbContext DbContext { get; }
 
-        public PagedResult<NewsDto> GetNews(NewsSpecification specification = null) {
+        public PagedResult<NewsDto> GetNews(NewsSpecification specification = null)
+        {
 
             if (specification?.PageSize < 0)
                 specification.PageSize = null;
             if (specification?.PageNumber < 0)
                 specification.PageNumber = null;
 
-            IQueryable<News> query = DbContext
+            IQueryable<News> query = _dbContext
                 .News.Include(n => n.Author)
                 .Include(n => n.Comments)
                 .Include(n => n.Category);
@@ -83,6 +91,7 @@ namespace NewsPortal.Dal.Services {
                     query = query.OrderBy(n => n.Comments.Count());
                     break;
             }
+            var today = DateTime.Today;
 
             int? allResultsCount = null;
             if ((specification?.PageSize ?? 0) != 0)
@@ -90,6 +99,7 @@ namespace NewsPortal.Dal.Services {
                 specification.PageNumber = specification.PageNumber ?? 0;
                 allResultsCount = query.Count();
                 query = query
+                .Where(n => n.ExpirationDate > today)
                 .Skip(specification.PageNumber.Value * specification.PageSize.Value)
                 .Take(specification.PageSize.Value);
             }
@@ -104,13 +114,15 @@ namespace NewsPortal.Dal.Services {
 
         public IEnumerable<NewsDto> GetAllNews(NewsSpecification specification = null)
         {
-            IQueryable<News> query = DbContext
+            var today = DateTime.Today;
+
+            IQueryable<News> query = _dbContext
                 .News.Include(n => n.Author)
                 .Include(n => n.Comments)
                 .Include(n => n.Category);
 
 
-            return query.Select(n => new NewsDto
+            return query.Where(n=> n.ExpirationDate > today).Select(n => new NewsDto
             {
                 Id = n.Id,
                 Author = n.Author.Name,
@@ -124,25 +136,27 @@ namespace NewsPortal.Dal.Services {
             }).ToList();
         }
 
-        public NewsDto AddNews(int authorId, string headline, string shortDescription, string body)
+        public async Task<NewsDto> AddNews(int authorId, string headline, string shortDescription, string body)
         {
-            var news = DbContext.News.Add(new News {
-                AuthorId = 1,
+            var news = _dbContext.News.Add(new News
+            {
+                AuthorId = authorId,
                 Headline = headline,
                 ShortDescription = shortDescription,
                 Body = body,
-                CategoryId = 1,
-                PublishDate = DateTime.Now
+                CategoryId = 1, //TODO
+                PublishDate = DateTime.Now,
+                ExpirationDate = DateTime.Now.AddYears(2)
                 // TODO: replace placeholder values
             });
-            DbContext.SaveChanges();
+            await _dbContext.SaveChangesAsync();
 
-            return DbContext.News.Where(n => n.Id == news.Entity.Id).Select(NewsDtoSelector).Single();
+            return await _dbContext.News.Select(NewsDtoSelector).SingleAsync(n => n.Id == news.Entity.Id);
         }
 
-        public NewsDto GetOneNews(int id)
+        public Task<NewsDto> GetOneNews(int id)
         {
-            return DbContext.News.Where(n => n.Id == id).Select(NewsDtoSelector).Single();
+            return _dbContext.News.Select(NewsDtoSelector).SingleAsync(n => n.Id == id);
         }
     }
 }

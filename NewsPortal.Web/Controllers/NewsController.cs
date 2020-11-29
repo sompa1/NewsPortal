@@ -1,32 +1,33 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NewsPortal.Dal.Dtos;
-using NewsPortal.Dal.Entities;
+using NewsPortal.Bll.Dtos;
+using NewsPortal.Bll.Interfaces;
+using NewsPortal.Model;
 using NewsPortal.Dal.Services;
 using NewsPortal.Dal.Specifications;
 using NewsPortal.Web.Models;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace NewsPortal.Web.Controllers {
 
     public class NewsController : Controller {
 
-        public NewsService NewsService { get; }
+        private readonly INewsService _newsService;
+        private readonly ICommentService _commentService;
+        private readonly UserManager<User> _userManager;
 
-        public CommentService CommentService { get; }
-
-        public UserManager<User> UserManager { get; }
-
-        public NewsController(NewsService newsService, CommentService commentService, UserManager<User> userManager) {
-            NewsService = newsService;
-            CommentService = commentService;
-            UserManager = userManager;
+        public NewsController(INewsService newsService, ICommentService commentService, UserManager<User> userManager) {
+            _userManager = userManager;
+            _newsService = newsService;
+            _commentService = commentService;
         }
 
         private int? currentUserId;
 
-        public int? CurrentUserId => User.Identity.IsAuthenticated ? (currentUserId ?? (currentUserId = int.Parse(UserManager.GetUserId(User)))) : null;
+
+        public int? CurrentUserId => User.Identity.IsAuthenticated ? (currentUserId ?? (currentUserId = int.Parse(_userManager.GetUserId(User)))) : null;
 
         [AllowAnonymous]
         public IActionResult Index(NewsSpecification specification)
@@ -34,22 +35,22 @@ namespace NewsPortal.Web.Controllers {
             if (specification?.PageNumber != null)
                 specification.PageNumber -= 1;
 
-            var news = NewsService.GetNews(specification);
+            var news = _newsService.GetNews(specification);
             return View(news);
         }
         
         [AllowAnonymous]
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (!id.HasValue)
                 return RedirectToAction("Index", "News");
 
-            var news = NewsService.GetOneNews(id.Value);
+            var news = await _newsService.GetOneNews(id.Value);
 
             if (news == null)
                 return NotFound();
 
-            var comments = CommentService.GetComments(id.Value);
+            var comments = _commentService.GetComments(id.Value);
 
             var model = new NewsModel
             {
@@ -61,28 +62,31 @@ namespace NewsPortal.Web.Controllers {
             return View(model);
         }
 
-        [AllowAnonymous]
+        [Authorize(Roles = "Authors")]
         public IActionResult Write() {
             return View();
         }
-        
+
+        [Authorize(Roles = "Authors")]
         [HttpPost]
-        public ActionResult AddNews(string headline, string shortDescription, string body)
+        public async Task<ActionResult> AddNews(string headline, string shortDescription, string body)
         {
-            var news = NewsService.AddNews(0, headline, shortDescription, body);
+            var news = await _newsService.AddNews(CurrentUserId.Value, headline, shortDescription, body);
             return RedirectToAction("Details", "News", new { id = news.Id });
         }
 
+        [Authorize]
         [HttpPost]
-        public ActionResult AddComment(int newsId, string text)
+        public async Task<ActionResult> AddComment(int newsId, string text)
         {
-            CommentService.PostComment(newsId, text, CurrentUserId.Value);
+            await _commentService.PostComment(newsId, text, CurrentUserId.Value);
             return RedirectToAction("Details", "News", new { id = newsId });
         }
 
-        public ActionResult DeleteComment(int id) {
-            CommentDto comment = CommentService.DeleteComment(id, CurrentUserId.Value);
-            return RedirectToAction("Details", "News", new { id = comment.NewsId });
+        [Authorize]
+        public async Task<ActionResult> DeleteComment(int id) {
+            var newsId = await _commentService.DeleteComment(id, CurrentUserId.Value);
+            return RedirectToAction("Details", "News", new { id = newsId });
         }
     }
 }

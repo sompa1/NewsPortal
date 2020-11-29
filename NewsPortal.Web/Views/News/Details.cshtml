@@ -1,5 +1,5 @@
 ﻿@model NewsPortal.Web.Models.NewsModel
-@using NewsPortal.Dal.Dtos
+@using NewsPortal.Bll.Dtos
 @{
     ViewData["Title"] = Model.News.Headline;
 }
@@ -48,7 +48,21 @@
         </div>
         @foreach (var comment in Model.Comments)
         {
-            <partial name="~/Views/Shared/_CommentPartial.cshtml" model="comment" />
+    <div class="card mb-2" id="comment-@comment.Id">
+        <div class="card-header">
+            <h3 class="card-title">@comment.User</h3>
+            <span class="text-muted">
+                @comment.CreationDate.ToLocalTime().ToString("yyyy. MMM dd.hh: mm:ss")
+            </span>
+            @if (comment.UserId == Model.CurrentUserId)
+            {
+                <a asp-controller="News" asp-action="DeleteComment" asp-route-id="@comment.Id">
+                    Delete Comment
+                </a>
+            }
+        </div>
+        <div class="card-body">@Html.Raw(comment.Text)</div>
+    </div>
         }
 
     </div>

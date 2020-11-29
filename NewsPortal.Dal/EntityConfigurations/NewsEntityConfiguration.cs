@@ -1,4 +1,4 @@
-﻿using NewsPortal.Dal.Entities;
+﻿using NewsPortal.Model;
 using NewsPortal.Dal.SeedInterfaces;
 using NewsPortal.Dal.SeedServices;
 using Microsoft.EntityFrameworkCore;

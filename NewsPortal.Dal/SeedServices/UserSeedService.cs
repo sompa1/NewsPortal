@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
-using NewsPortal.Dal.Entities;
+using NewsPortal.Model;
 using NewsPortal.Dal.SeedInterfaces;
-using NewsPortal.Dal.Users;
+using NewsPortal.Model.Users;
 using Microsoft.AspNetCore.Identity;
 
 namespace NewsPortal.Dal.SeedServices
@@ -29,7 +29,15 @@ namespace NewsPortal.Dal.SeedServices
                     Email = "admin@newsportal.com",
                     Name = "Administrator",
                     SecurityStamp = Guid.NewGuid().ToString(),
-                    UserName = "admin"
+                    UserName = "admin",
+                };
+
+                var author = new Author
+                {
+                    Email = "author@newsportal.com",
+                    Name = "John Doe",
+                    SecurityStamp = Guid.NewGuid().ToString(),
+                    UserName = "johndoe",
                 };
 
                 var createResult = await _userManager.CreateAsync(user, "@Admin123");
@@ -38,6 +46,13 @@ namespace NewsPortal.Dal.SeedServices
                 if (!createResult.Succeeded || !addToRoleResult.Succeeded)
                     throw new ApplicationException($"Administrator could not be created: " +
                     $"{string.Join(", ", createResult.Errors.Concat(addToRoleResult.Errors).Select(e => e.Description))}");
+
+                var createResult2 = await _userManager.CreateAsync(author, "@Author123");
+                var addToRoleResult2 = await _userManager.AddToRoleAsync(author, Roles.Authors);
+
+                if (!createResult2.Succeeded || !addToRoleResult2.Succeeded)
+                    throw new ApplicationException($"Author could not be created: " +
+                    $"{string.Join(", ", createResult2.Errors.Concat(addToRoleResult2.Errors).Select(e => e.Description))}");
             }
         }
     }

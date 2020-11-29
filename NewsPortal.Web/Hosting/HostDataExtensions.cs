@@ -27,6 +27,7 @@ namespace NewsPortal.Web.Hosting
                 var userSeeder = serviceProvider.GetRequiredService<IUserSeedService>();
                 await userSeeder.SeedUserAsync();
 
+
             }
             return host;
         }

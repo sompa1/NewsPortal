@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NewsPortal.Dal.Dtos {
+namespace NewsPortal.Bll.Dtos {
 
     public class NewsDto {
 
@@ -14,7 +14,6 @@ namespace NewsPortal.Dal.Dtos {
         public string Author { get; set; }
         public int CategoryId { get; set; }
         public int NumberOfComments { get; set; }
-
         public int PublishYear { get; set; }
 
     }

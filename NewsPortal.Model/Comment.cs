@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace NewsPortal.Dal.Entities
+namespace NewsPortal.Model
 {
     public class Comment
     {

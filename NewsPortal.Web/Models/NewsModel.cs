@@ -1,4 +1,4 @@
-﻿using NewsPortal.Dal.Dtos;
+﻿using NewsPortal.Bll.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;

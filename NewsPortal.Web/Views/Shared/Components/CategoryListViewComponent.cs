@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NewsPortal.Dal.Services;
+using NewsPortal.Bll.Interfaces;
+using NewsPortal.Bll.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,14 +10,15 @@ namespace NewsPortal.Web.Views.Shared.Components
 {
     public class CategoryListViewComponent : ViewComponent
     {
-        public CategoryListViewComponent(CategoryService categoryService)
+        private readonly ICategoryService _categoryService;
+
+        public CategoryListViewComponent(ICategoryService categoryService)
         {
-            CategoryService = categoryService;
+            _categoryService = categoryService;
         }
-        public CategoryService CategoryService { get; }
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View(CategoryService.GetCategories());
+            return View(await _categoryService.GetCategories());
         }
     }
 }
