@@ -26,7 +26,7 @@ namespace NewsPortal.Dal.Services
             NewsId = c.NewsId,
             CreationDate = c.CreationDate,
             Text = c.Text,
-            User = c.User.Name,
+            User = c.User.UserName,
             UserId = c.UserId
         };
 

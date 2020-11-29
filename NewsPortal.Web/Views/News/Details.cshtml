@@ -58,6 +58,9 @@
             <span class="text-muted">
                 @comment.CreationDate.ToLocalTime().ToString("yyyy. MMM dd. HH:mm:ss")
             </span>
+            <span class="text-muted">
+                @comment.User
+            </span>
             @if (comment.UserId == Model.CurrentUserId)
             {
                 <a asp-controller="News" asp-action="DeleteComment" asp-route-id="@comment.Id">
