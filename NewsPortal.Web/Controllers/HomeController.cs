@@ -27,7 +27,7 @@ namespace NewsPortal.Web.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
+        [Authorize(Roles = "Authors")]
         public async Task<IActionResult> Edit()
         {
             var content = await _homePageService.GetHomePageContent();
@@ -35,7 +35,7 @@ namespace NewsPortal.Web.Controllers
         }
 
         [HttpPost]
-        [Authorize]
+        [Authorize(Roles = "Authors")]
         public async Task<IActionResult> Edit(HomeViewModel model)
         {
             await _homePageService.UpdateHomePage(model.Content);
