@@ -1,0 +1,15 @@
+﻿@model NewsPortal.Web.Models.CategoryViewModel
+<div class="card card-body">
+    <form id="new-news-form" method="post" asp-controller="Categories" asp-action="Create">
+        <div>
+            <label asp-for="@Model.Name">Content</label>
+            <input asp-for="@Model.Name" class="form-control" type="text">
+            <span asp-validation-for="@Model.Name" class="text-danger"></span>
+        </div>
+        <div class="text-right mt-2">
+            <button type="submit" class="btn btn-default">
+                Publish
+            </button>
+        </div>
+    </form>
+</div>
