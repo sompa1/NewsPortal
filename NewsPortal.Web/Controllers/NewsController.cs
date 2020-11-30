@@ -96,5 +96,15 @@ namespace NewsPortal.Web.Controllers {
             return RedirectToAction("Details", "News", new { id = newsId });
         }
 
+        [Authorize]
+        public async Task<ActionResult> DeleteNews(int id) {
+            var news = await _newsService.GetOneNews(id);
+            var isAdmin = User.IsInRole("Administrators");
+            if (isAdmin || (news != null && news.AuthorId == CurrentUserId)) {
+                await _newsService.DeleteNews(id);
+                return RedirectToAction("Index", "News");
+            }
+            return RedirectToAction("Details", "News", new { id });
+        }
     }
 }

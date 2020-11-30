@@ -9,9 +9,9 @@ namespace NewsPortal.Model
 
         public string Headline { get; set; }
 
-        public int AuthorId { get; set; }
+        public int? AuthorId { get; set; }
 
-        public User Author { get; set; }
+        public User? Author { get; set; }
 
         public string ShortDescription { get; set; }
 

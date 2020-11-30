@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using NewsPortal.Dal;
 
 namespace NewsPortal.Dal.Migrations
 {
     [DbContext(typeof(NewsPortalDbContext))]
-    partial class NewsPortalDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201130221552_init2")]
+    partial class init2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -221,7 +223,7 @@ namespace NewsPortal.Dal.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AuthorId")
+                    b.Property<int>("AuthorId")
                         .HasColumnType("int");
 
                     b.Property<string>("Body")
@@ -392,7 +394,7 @@ namespace NewsPortal.Dal.Migrations
                     b.HasOne("NewsPortal.Model.User", "Author")
                         .WithMany("News")
                         .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.SetNull);
+                        .IsRequired();
 
                     b.HasOne("NewsPortal.Model.Category", "Category")
                         .WithMany("News")

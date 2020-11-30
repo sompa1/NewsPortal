@@ -45,6 +45,7 @@ namespace NewsPortal.Web
             });
 
             services.AddSignalR();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<INewsService, NewsService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<ICommentService, CommentService>();

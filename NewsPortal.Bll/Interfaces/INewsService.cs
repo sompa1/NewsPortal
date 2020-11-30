@@ -13,5 +13,6 @@ namespace NewsPortal.Bll.Interfaces
         PagedResult<NewsDto> GetNews(NewsSpecification specification);
         Task<NewsDto> GetOneNews(int id);
         Task<int> PopulateDbWithNews();
+        Task<int> DeleteNews(int id);
     }
 }

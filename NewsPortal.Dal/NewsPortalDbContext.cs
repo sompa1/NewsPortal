@@ -16,8 +16,9 @@ namespace NewsPortal.Dal {
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
-            modelBuilder.Entity<Comment>().HasOne(ent => ent.User).WithMany(ent => ent.Comments).HasForeignKey(ent => ent.UserId).OnDelete(DeleteBehavior.ClientSetNull);
-            modelBuilder.Entity<News>().HasOne(ent => ent.Author).WithMany(ent => ent.News).HasForeignKey(ent => ent.AuthorId).OnDelete(DeleteBehavior.ClientSetNull);
+            modelBuilder.Entity<Comment>().HasOne(ent => ent.User).WithMany(ent => ent.Comments).HasForeignKey(ent => ent.UserId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Comment>().HasOne(ent => ent.News).WithMany(ent => ent.Comments).HasForeignKey(ent => ent.NewsId).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<News>().HasOne(ent => ent.Author).WithMany(ent => ent.News).HasForeignKey(ent => ent.AuthorId).OnDelete(DeleteBehavior.SetNull);
             modelBuilder.Entity<HomePageContent>().HasData(
                 new HomePageContent { Id = 1, Content = @"Please edit the content of the home page." }
                 );

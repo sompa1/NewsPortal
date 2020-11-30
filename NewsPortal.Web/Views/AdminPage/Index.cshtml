@@ -3,9 +3,12 @@
 
 @inject UserManager<User> UserManager
 
-@model NewsPortal.Web.Models.UserListModel
-
-@Html.ActionLink("Populate database with example news", "PopulateNews");
+@model NewsPortal.Web.Models.AdminPageModel
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <td>@Html.ActionLink("Populate database with example news", "PopulateNews")</td>
+    </tr>
+</table>
 <table class="table table-bordered table-responsive table-hover">
     <tr>
         <th>Id </th>
@@ -35,6 +38,10 @@
                     @Html.ActionLink("Revoke Admin role", "RevokeAdminRole", new { id = user.Id })
                 } else {
                     @Html.ActionLink("Grant Admin role", "GrantAdminRole", new { id = user.Id })
+                }
+                @if (user.Id != Model.CurrentUserId) {
+                    @Html.Raw(" | ")
+                    @Html.ActionLink("Delete user", "RemoveUser", new { id = user.Id })
                 }
             </td>
         </tr>

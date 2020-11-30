@@ -19,7 +19,7 @@ namespace NewsPortal.Bll.Services {
         public static Lazy<Func<News, NewsDto>> NewsDtoSelectorFunc { get; } = new Lazy<Func<News, NewsDto>>(() => NewsDtoSelector.Compile());
         public static Expression<Func<News, NewsDto>> NewsDtoSelector { get; } = n => new NewsDto
         {
-            Author = n.Author.UserName,
+            Author = n.Author == null ? "Unknown" : n.Author.UserName,
             AuthorId = n.AuthorId,
             CategoryId = n.CategoryId,
             Category = n.Category.Name,
@@ -173,6 +173,11 @@ namespace NewsPortal.Bll.Services {
                     PublishDate = new DateTime(2018, 5, 27, 8, 0, 0),
                     ExpirationDate = new DateTime(2021, 5, 26, 7, 0, 0)
                 });
+            return _dbContext.SaveChangesAsync();
+        }
+
+        public Task<int> DeleteNews(int id) {
+            _dbContext.News.Remove(_dbContext.News.Find(id));
             return _dbContext.SaveChangesAsync();
         }
     }
