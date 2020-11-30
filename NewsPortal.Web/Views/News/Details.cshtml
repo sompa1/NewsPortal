@@ -29,17 +29,14 @@
 <div class="row">
     <div class="col-12">
         <div class="card card-body my-3">
-            @if (!User.Identity.IsAuthenticated)
-            {
+            @if (!User.Identity.IsAuthenticated) {
                 <div class="text-center">
                     To write a comment you should
                     <a asp-area="Identity" asp-page="/Account/Login">
                         log in
                     </a>!
                 </div>
-            }
-            else
-            {
+            } else {
                 <form id="new-comment-form" method="post" asp-action="AddComment">
                     <textarea name="text" class="html-editor"></textarea>
                     <div class="text-right mt-2">
@@ -71,7 +68,6 @@
         <div class="card-body">@Html.Raw(comment.Text)</div>
     </div>
         }
-
     </div>
 </div>
 @section Scripts {
