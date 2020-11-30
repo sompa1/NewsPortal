@@ -36,7 +36,7 @@ namespace NewsPortal.Web
             .AddEntityFrameworkStores<NewsPortalDbContext>()
             .AddDefaultTokenProviders();
 
-            services.AddDbContext<NewsPortalDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString(nameof(NewsPortalDbContext)))).AddTransient<ISeedService, SeedService>(); ;
+            services.AddDbContext<NewsPortalDbContext>(o => o.UseSqlServer(Configuration.GetConnectionString(nameof(NewsPortalDbContext))));
 
             services.AddAuthentication().AddFacebook(facebookOptions =>
             {

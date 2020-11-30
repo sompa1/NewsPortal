@@ -12,5 +12,6 @@ namespace NewsPortal.Bll.Interfaces
         IEnumerable<NewsDto> GetAllNews(NewsSpecification specification = null);
         PagedResult<NewsDto> GetNews(NewsSpecification specification = null);
         Task<NewsDto> GetOneNews(int id);
+        Task<int> PopulateDbWithNews();
     }
 }

@@ -81,5 +81,45 @@ namespace NewsPortal.Bll.Services
                     Value = (c.Id).ToString()
                 });
         }
+
+        public Task<int> PopulateDbWithCategories() {
+            _dbContext.AddRange(new Category() {
+                    Name = "Crime"
+                },
+                new Category() {
+                    Name = "Entertainment"
+                },
+                new Category() {
+                    Name = "Politics"
+                },
+                new Category() {
+                    Name = "World News"
+                },
+                new Category() {
+                    Name = "Impact"
+                },
+                new Category() {
+                    Name = "Weird News"
+                },
+                new Category() {
+                    Name = "Black Voices"
+                },
+                new Category() {
+                    Name = "Women"
+                },
+                new Category() {
+                    Name = "Comedy"
+                },
+                new Category() {
+                    Name = "Sports"
+                },
+                new Category() {
+                    Name = "Business"
+                },
+                new Category() {
+                    Name = "Tech"
+                });
+            return _dbContext.SaveChangesAsync();
+        }
     }
 }

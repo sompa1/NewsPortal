@@ -13,5 +13,6 @@ namespace NewsPortal.Bll.Interfaces
         Task UpdateCategoryById(CategoryDto dto);
         Task CreateCategory(CategoryDto dto);
         Task DeleteCategoryById(CategoryDto dto);
+        Task<int> PopulateDbWithCategories();
     }
 }
