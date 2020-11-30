@@ -1,7 +1,6 @@
 ﻿@model NewsPortal.Bll.Dtos.PagedResult<NewsPortal.Bll.Dtos.NewsDto>
 <div class="row">
-    @foreach (var (news, i) in Model.Results.Select((news, i) => (news: news, i: i + 1)))
-    {
+    @foreach (var news in Model.Results) {
         <div class="col-md-6">
             <vc:news-details news-dto="news"></vc:news-details>
         </div>

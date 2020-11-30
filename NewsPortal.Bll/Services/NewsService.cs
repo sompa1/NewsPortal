@@ -37,13 +37,12 @@ namespace NewsPortal.Bll.Services {
         }
 
 
-        public PagedResult<NewsDto> GetNews(NewsSpecification specification = null)
+        public PagedResult<NewsDto> GetNews(NewsSpecification specification)
         {
-
-            if (specification?.PageSize < 0)
-                specification.PageSize = null;
-            if (specification?.PageNumber < 0)
-                specification.PageNumber = null;
+            if (specification.PageSize < 1)
+                specification.PageSize = 1;
+            if (specification.PageNumber < 1)
+                specification.PageNumber = 1;
 
             IQueryable<News> query = _dbContext
                 .News.Include(n => n.Author)
@@ -65,8 +64,7 @@ namespace NewsPortal.Bll.Services {
             if (specification?.MaxNumberOfComments != null)
                 query = query.Where(n => n.Comments.Count() <= specification.MaxNumberOfComments);
 
-            switch (specification?.Order)
-            {
+            switch (specification?.Order) {
                 case NewsSpecification.NewsOrder.AuthorAscending:
                     query = query.OrderBy(n => n.Author);
                     break;
@@ -88,22 +86,15 @@ namespace NewsPortal.Bll.Services {
             }
             var today = DateTime.Today;
 
-            int? allResultsCount = null;
-            if ((specification?.PageSize ?? 0) != 0)
-            {
-                specification.PageNumber = specification.PageNumber ?? 0;
-                allResultsCount = query.Count();
-                query = query
-                .Where(n => n.ExpirationDate > today)
-                .Skip(specification.PageNumber.Value * specification.PageSize.Value)
-                .Take(specification.PageSize.Value);
-            }
-            return new PagedResult<NewsDto>
-            {
+            var allResultsCount = query.Count();
+            query = query.Where(n => n.ExpirationDate >= today)
+                .Skip((specification.PageNumber - 1) * specification.PageSize)
+                .Take(specification.PageSize);
+            return new PagedResult<NewsDto> {
                 AllResultsCount = allResultsCount,
                 Results = query.ToList().Select(NewsDtoSelectorFunc.Value),
-                PageNumber = specification?.PageNumber,
-                PageSize = specification?.PageSize
+                PageNumber = specification.PageNumber,
+                PageSize = specification.PageSize
             };
         }
 

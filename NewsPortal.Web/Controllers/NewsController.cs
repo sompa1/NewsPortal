@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using NewsPortal.Bll.Interfaces;
 using NewsPortal.Model;
 using NewsPortal.Web.Models;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NewsPortal.Web.Controllers {
@@ -32,12 +34,12 @@ namespace NewsPortal.Web.Controllers {
         [AllowAnonymous]
         public IActionResult Index(NewsIndexModel model)
         {
-            var list = _categoryService.GetAllCategory();
+            var list = new List<SelectListItem> {
+                new SelectListItem("", null)
+            };
+            list.AddRange(_categoryService.GetAllCategory());
             model.Categories = list;
-            if (model.Specification?.PageNumber != null)
-                model.Specification.PageNumber -= 1;
-
-            model.News = _newsService.GetNews(model.Specification);
+            model.News = _newsService.GetNews(model.Specification ?? new Dal.Specifications.NewsSpecification());
             return View(model);
         }
 
