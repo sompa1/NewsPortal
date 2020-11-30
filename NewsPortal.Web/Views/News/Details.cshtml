@@ -1,5 +1,4 @@
 ﻿@model NewsPortal.Web.Models.NewsModel
-@using NewsPortal.Dal.Dtos
 @{
     ViewData["Title"] = Model.News.Headline;
 }
@@ -10,8 +9,13 @@
         </div>
         <div class="col-9">
             <p class="text-info">
-                <a asp-controller="News" asp-action="Details"
-                   asp-route-author="@Model.News.Author">@Model.News.Author</a>
+                @Model.News.Author
+            </p>
+            <p class="text-info">
+                @Model.News.PublishYear
+            </p>
+            <p class="text-info">
+                @Model.News.Category
             </p>
             <hr />
             <p class="small">@Html.Raw(@Model.News.ShortDescription)</p>
@@ -43,21 +47,26 @@
                 </form>
             }
         </div>
-        @foreach (var comment in Model.Comments) {
-            <div class="card mb-2" id="comment-@comment.Id">
-                <div class="card-header">
-                    <h3 class="card-title">@comment.User</h3>
-                    <span class="text-muted">
-                        @comment.CreationDate.ToLocalTime().ToString("yyyy. MMM dd.hh: mm:ss")
-                    </span>
-                    @if (comment.UserId == Model.CurrentUserId) {
-                        <a asp-controller="News" asp-action="DeleteComment" asp-route-id="@comment.Id">
-                            Delete Comment
-                        </a>
-                    }
-                </div>
-                <div class="card-body">@Html.Raw(comment.Text)</div>
-            </div>
+        @foreach (var comment in Model.Comments)
+        {
+    <div class="card mb-2" id="comment-@comment.Id">
+        <div class="card-header">
+            <h3 class="card-title">@comment.User</h3>
+            <span class="text-muted">
+                @comment.CreationDate.ToLocalTime().ToString("yyyy. MMM dd. HH:mm:ss")
+            </span>
+            <span class="text-muted">
+                @comment.User
+            </span>
+            @if (comment.UserId == Model.CurrentUserId)
+            {
+                <a asp-controller="News" asp-action="DeleteComment" asp-route-id="@comment.Id">
+                    Delete Comment
+                </a>
+            }
+        </div>
+        <div class="card-body">@Html.Raw(comment.Text)</div>
+    </div>
         }
     </div>
 </div>

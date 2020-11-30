@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NewsPortal.Dal.Dtos;
+using NewsPortal.Bll.Dtos;
 namespace NewsPortal.Web.Views.Shared.Components
 {
     public class NewsListViewComponent: ViewComponent

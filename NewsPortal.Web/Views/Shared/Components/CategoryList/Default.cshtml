@@ -1,11 +1,11 @@
-﻿@model IEnumerable<NewsPortal.Dal.Dtos.CategoryDto>
+﻿@model IEnumerable<NewsPortal.Bll.Dtos.CategoryDto>
 <div class="categories">
     @foreach (var category in Model)
     {
-        <div>
-            <a asp-controller="Home" asp-action="Index" asp-route-categoryId="@category.Id">
-                @category.Name
-            </a>
-        </div>
+    <div>
+        <a asp-controller="News" asp-action="Index" asp-route-specification.CategoryId="@category.Id">
+            @category.Name
+        </a>
+    </div>
     }
 </div>

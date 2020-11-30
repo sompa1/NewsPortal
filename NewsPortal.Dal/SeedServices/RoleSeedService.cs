@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NewsPortal.Dal.SeedInterfaces;
-using NewsPortal.Dal.Users;
+using NewsPortal.Model.Users;
 using Microsoft.AspNetCore.Identity;
 
-namespace NewsPortal.Dal.SeedServices
-{
+namespace NewsPortal.Dal.SeedServices {
     public class RoleSeedService: IRoleSeedService
     {
         private readonly RoleManager<IdentityRole<int>> _roleManager;
@@ -21,6 +17,8 @@ namespace NewsPortal.Dal.SeedServices
         {
             if (!await _roleManager.RoleExistsAsync(Roles.Administrators))
                 await _roleManager.CreateAsync(new IdentityRole<int> { Name = Roles.Administrators });
+            if (!await _roleManager.RoleExistsAsync(Roles.Authors))
+                await _roleManager.CreateAsync(new IdentityRole<int> { Name = Roles.Authors });
         }
     }
 }

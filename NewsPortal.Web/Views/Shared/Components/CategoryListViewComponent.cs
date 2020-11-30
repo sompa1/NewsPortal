@@ -1,22 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using NewsPortal.Dal.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
+using NewsPortal.Bll.Interfaces;
 using System.Threading.Tasks;
 
-namespace NewsPortal.Web.Views.Shared.Components
-{
+namespace NewsPortal.Web.Views.Shared.Components {
     public class CategoryListViewComponent : ViewComponent
     {
-        public CategoryListViewComponent(CategoryService categoryService)
+        private readonly ICategoryService _categoryService;
+
+        public CategoryListViewComponent(ICategoryService categoryService)
         {
-            CategoryService = categoryService;
+            _categoryService = categoryService;
         }
-        public CategoryService CategoryService { get; }
-        public IViewComponentResult Invoke()
+        public async Task<IViewComponentResult> InvokeAsync()
         {
-            return View(CategoryService.GetCategories());
+            return View(await _categoryService.GetCategories());
         }
     }
 }

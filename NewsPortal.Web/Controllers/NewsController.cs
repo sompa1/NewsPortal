@@ -1,55 +1,58 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NewsPortal.Dal.Dtos;
-using NewsPortal.Dal.Entities;
-using NewsPortal.Dal.Services;
-using NewsPortal.Dal.Specifications;
+using NewsPortal.Bll.Interfaces;
+using NewsPortal.Model;
 using NewsPortal.Web.Models;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace NewsPortal.Web.Controllers {
 
-    public class NewsController : Controller {
+    public class NewsController : Controller
+    {
 
-        public NewsService NewsService { get; }
+        private readonly INewsService _newsService;
+        private readonly ICommentService _commentService;
+        private readonly ICategoryService _categoryService;
+        private readonly UserManager<User> _userManager;
 
-        public CommentService CommentService { get; }
-
-        public UserManager<User> UserManager { get; }
-
-        public NewsController(NewsService newsService, CommentService commentService, UserManager<User> userManager) {
-            NewsService = newsService;
-            CommentService = commentService;
-            UserManager = userManager;
+        public NewsController(INewsService newsService, ICommentService commentService, ICategoryService categoryService, UserManager<User> userManager)
+        {
+            _userManager = userManager;
+            _newsService = newsService;
+            _commentService = commentService;
+            _categoryService = categoryService;
         }
 
         private int? currentUserId;
 
-        public int? CurrentUserId => User.Identity.IsAuthenticated ? (currentUserId ?? (currentUserId = int.Parse(UserManager.GetUserId(User)))) : null;
+
+        public int? CurrentUserId => User.Identity.IsAuthenticated ? (currentUserId ?? (currentUserId = int.Parse(_userManager.GetUserId(User)))) : null;
 
         [AllowAnonymous]
-        public IActionResult Index(NewsSpecification specification)
+        public IActionResult Index(NewsIndexModel model)
         {
-            if (specification?.PageNumber != null)
-                specification.PageNumber -= 1;
+            var list = _categoryService.GetAllCategory();
+            model.Categories = list;
+            if (model.Specification?.PageNumber != null)
+                model.Specification.PageNumber -= 1;
 
-            var news = NewsService.GetNews(specification);
-            return View(news);
+            model.News = _newsService.GetNews(model.Specification);
+            return View(model);
         }
-        
+
         [AllowAnonymous]
-        public IActionResult Details(int? id)
+        public async Task<IActionResult> Details(int? id)
         {
             if (!id.HasValue)
                 return RedirectToAction("Index", "News");
 
-            var news = NewsService.GetOneNews(id.Value);
+            var news = await _newsService.GetOneNews(id.Value);
 
             if (news == null)
                 return NotFound();
 
-            var comments = CommentService.GetComments(id.Value);
+            var comments = _commentService.GetComments(id.Value);
 
             var model = new NewsModel
             {
@@ -61,28 +64,35 @@ namespace NewsPortal.Web.Controllers {
             return View(model);
         }
 
-        [AllowAnonymous]
-        public IActionResult Write() {
-            return View();
-        }
-        
-        [HttpPost]
-        public ActionResult AddNews(string headline, string shortDescription, string body)
+        [Authorize(Roles = "Authors")]
+        public IActionResult Write()
         {
-            var news = NewsService.AddNews(0, headline, shortDescription, body);
+            var list = _categoryService.GetAllCategory();
+            return View(new CreateNewsModel() { Categories = list });
+        }
+
+        [Authorize(Roles = "Authors")]
+        [HttpPost]
+        public async Task<ActionResult> AddNews(CreateNewsModel model)
+        {
+            var news = await _newsService.AddNews(CurrentUserId.Value, model.Headline, model.ShortDescription, model.Body, model.CategoryId, model.ExpirationDate);
             return RedirectToAction("Details", "News", new { id = news.Id });
         }
 
+        [Authorize]
         [HttpPost]
-        public ActionResult AddComment(int newsId, string text)
+        public async Task<ActionResult> AddComment(int newsId, string text)
         {
-            CommentService.PostComment(newsId, text, CurrentUserId.Value);
+            await _commentService.PostComment(newsId, text, CurrentUserId.Value);
             return RedirectToAction("Details", "News", new { id = newsId });
         }
 
-        public ActionResult DeleteComment(int id) {
-            CommentDto comment = CommentService.DeleteComment(id, CurrentUserId.Value);
-            return RedirectToAction("Details", "News", new { id = comment.NewsId });
+        [Authorize]
+        public async Task<ActionResult> DeleteComment(int id)
+        {
+            var newsId = await _commentService.DeleteComment(id, CurrentUserId.Value);
+            return RedirectToAction("Details", "News", new { id = newsId });
         }
+
     }
 }

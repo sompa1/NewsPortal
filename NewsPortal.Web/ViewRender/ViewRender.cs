@@ -7,13 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Routing;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace NewsPortal.Web.ViewRender
-{
+namespace NewsPortal.Web.ViewRender {
     public class ViewRender : IViewRender
     {
         private IRazorViewEngine _viewEngine;

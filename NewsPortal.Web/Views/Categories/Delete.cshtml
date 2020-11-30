@@ -1,0 +1,11 @@
+﻿@model NewsPortal.Web.Models.CategoryViewModel
+<div class="card card-body">
+    <form id="new-news-form" method="post" asp-controller="Categories" asp-action="Delete">
+        <h2>@Model.Name</h2>
+        <div class="text-right mt-2">
+            <button type="submit" class="btn btn-danger">
+                Delete
+            </button>
+        </div>
+    </form>
+</div>

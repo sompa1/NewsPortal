@@ -1,14 +1,30 @@
-﻿@using NewsPortal.Dal.Dtos
+﻿@using NewsPortal.Bll.Dtos
+@model NewsPortal.Web.Models.CreateNewsModel
 <div class="card card-body">
     <form id="new-news-form" method="post" asp-controller="News" asp-action="AddNews">
-        <h2>Headline of the article:</h2>
-        <textarea name="headline" class="html-editor"></textarea>
-        <h2>Short version of the article:</h2>
-        <textarea name="shortDescription" class="html-editor"></textarea>
-        <h2>Full content of the article:</h2>
-        <textarea name="body" class="html-editor"></textarea>
+        @Html.DropDownListFor(x => x.CategoryId, Model.Categories)
+        <div>
+            <label asp-for="@Model.Headline">Headline of the article</label>
+            <input asp-for="@Model.Headline" class="form-control" type="text">
+            <span asp-validation-for="@Model.Headline" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="@Model.ShortDescription">Short Description of the article</label>
+            <textarea asp-for="@Model.ShortDescription" class="form-control html-editor"></textarea>
+            <span asp-validation-for="@Model.ShortDescription" class="text-danger"></span>
+        </div>
+        <div>
+            <label asp-for="@Model.Body">Full content of the article</label>
+            <textarea asp-for="@Model.Body" class="form-control html-editor"></textarea>
+            <span asp-validation-for="@Model.Body" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.ExpirationDate" class="control-label"></label>
+            <input asp-for="@Model.ExpirationDate" id="datepicker" type="text" class="form-control" value="@DateTime.Now.ToString("yyyy-MM-dd")" />
+            <span asp-validation-for="@Model.ExpirationDate" class="text-danger"></span>
+        </div>
         <div class="text-right mt-2">
-            <button class="btn btn-default">
+            <button type="submit" class="btn btn-default">
                 Publish
             </button>
         </div>
@@ -20,5 +36,12 @@
     <script>
         tinymce.init({ selector: '.html-editor' });
     </script>
-    <!--<script src="~/lib/signalr/dist/browser/signalr.js"></script>-->
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script>
+        $(function () {
+            $("#datepicker").datepicker();
+        });
+    </script>
 }

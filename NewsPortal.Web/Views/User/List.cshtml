@@ -1,0 +1,42 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using NewsPortal.Model
+
+@inject UserManager<User> UserManager
+
+@model NewsPortal.Web.Models.UserListModel
+
+@Html.ActionLink("Populate database with example news", "PopulateNews");
+<table class="table table-bordered table-responsive table-hover">
+    <tr>
+        <th>Id </th>
+        <th>Username</th>
+        <th>Email</th>
+        <th>Roles</th>
+        <th></th>
+    </tr>
+    @foreach (var user in Model.Users) {
+        <tr>
+            <td>@user.Id</td>
+            <td>@user.UserName</td>
+            <td>@user.Email</td>
+            <td>
+                @foreach (var role in await UserManager.GetRolesAsync(user)) {
+                    @role<br />
+                }
+            </td>
+            <td>
+                @if ((await UserManager.GetRolesAsync(user)).Contains("Authors")) {
+                    @Html.ActionLink("Revoke Author role", "RevokeAuthorRole", new { id = user.Id })
+                } else {
+                    @Html.ActionLink("Grant Author role", "GrantAuthorRole", new { id = user.Id })
+                }
+                |
+                @if ((await UserManager.GetRolesAsync(user)).Contains("Administrators")) {
+                    @Html.ActionLink("Revoke Admin role", "RevokeAdminRole", new { id = user.Id })
+                } else {
+                    @Html.ActionLink("Grant Admin role", "GrantAdminRole", new { id = user.Id })
+                }
+            </td>
+        </tr>
+    }
+</table>
