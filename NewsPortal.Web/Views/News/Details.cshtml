@@ -43,7 +43,7 @@
                 </div>
             } else {
                 <form id="new-comment-form" method="post" asp-action="AddComment">
-                    <textarea name="text" class="html-editor"></textarea>
+                    <textarea name="text" class="form-control" style="min-width: 100%"></textarea>
                     <div class="text-right mt-2">
                         <button class="btn btn-default" value="@Model.News.Id" name="newsId">
                             Comment
@@ -68,7 +68,9 @@
                         </a>
                     }
                 </div>
-                <div class="card-body">@Html.Raw(comment.Text)</div>
+                <div class="card-body">
+                    @comment.Text
+                </div>
             </div>
         }
     </div>
