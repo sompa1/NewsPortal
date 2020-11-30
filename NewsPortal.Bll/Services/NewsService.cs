@@ -50,7 +50,7 @@ namespace NewsPortal.Bll.Services {
                 .Include(n => n.Category);
 
             if (!string.IsNullOrWhiteSpace(specification?.Author))
-                query = query.Where(n => n.Author.Name.Contains(specification.Author));
+                query = query.Where(n => n.Author.UserName.Contains(specification.Author));
             if (specification?.CategoryId != null)
                 query = query.Where(n => n.CategoryId == specification.CategoryId);
             if (!string.IsNullOrWhiteSpace(specification?.Headline))
