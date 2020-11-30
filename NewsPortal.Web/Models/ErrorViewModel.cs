@@ -1,7 +1,4 @@
-using System;
-
-namespace NewsPortal.Web.Models
-{
+namespace NewsPortal.Web.Models {
     public class ErrorViewModel
     {
         public string RequestId { get; set; }

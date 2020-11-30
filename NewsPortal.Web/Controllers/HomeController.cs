@@ -3,12 +3,9 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewsPortal.Bll.Interfaces;
-using NewsPortal.Dal.Services;
-using NewsPortal.Dal.Specifications;
 using NewsPortal.Web.Models;
 
-namespace NewsPortal.Web.Controllers
-{
+namespace NewsPortal.Web.Controllers {
     public class HomeController : Controller
     {
         private readonly IHomePageService _homePageService;

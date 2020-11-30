@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace NewsPortal.Bll.Dtos
-{
+namespace NewsPortal.Bll.Dtos {
     public class PagedResult<T>
     {
          public IEnumerable<T> Results { get; set; }

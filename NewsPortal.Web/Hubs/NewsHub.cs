@@ -3,15 +3,10 @@ using Microsoft.AspNetCore.SignalR;
 using NewsPortal.Bll.Dtos;
 using NewsPortal.Bll.Interfaces;
 using NewsPortal.Model;
-using NewsPortal.Dal.Services;
 using NewsPortal.Web.ViewRender;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace NewsPortal.Web.Hubs
-{
+namespace NewsPortal.Web.Hubs {
     public class NewsHub: Hub<IHubClient>
     {
         private int? currentUserId;

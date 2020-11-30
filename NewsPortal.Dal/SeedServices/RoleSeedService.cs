@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using NewsPortal.Dal.SeedInterfaces;
 using NewsPortal.Model.Users;
 using Microsoft.AspNetCore.Identity;
 
-namespace NewsPortal.Dal.SeedServices
-{
+namespace NewsPortal.Dal.SeedServices {
     public class RoleSeedService: IRoleSeedService
     {
         private readonly RoleManager<IdentityRole<int>> _roleManager;

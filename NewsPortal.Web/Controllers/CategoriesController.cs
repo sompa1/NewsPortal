@@ -5,12 +5,9 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NewsPortal.Bll.Dtos;
 using NewsPortal.Bll.Interfaces;
-using NewsPortal.Dal.Services;
-using NewsPortal.Dal.Specifications;
 using NewsPortal.Web.Models;
 
-namespace NewsPortal.Web.Controllers
-{
+namespace NewsPortal.Web.Controllers {
     public class CategoriesController : Controller
     {
         private readonly ICategoryService _categoryService;

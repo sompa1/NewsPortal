@@ -1,15 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NewsPortal.Bll.Dtos;
 using NewsPortal.Bll.Interfaces;
 using NewsPortal.Dal;
 using NewsPortal.Model;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace NewsPortal.Bll.Services
-{
+namespace NewsPortal.Bll.Services {
     public class HomePageService : IHomePageService
     {
 

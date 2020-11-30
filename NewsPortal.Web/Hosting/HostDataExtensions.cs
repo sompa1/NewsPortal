@@ -1,15 +1,10 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using NewsPortal.Dal.SeedInterfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
-namespace NewsPortal.Web.Hosting
-{
+namespace NewsPortal.Web.Hosting {
     public static class HostDataExtensions
     {
         public async static Task<IHost> MigrateDatabase<TContext>(this IHost host)

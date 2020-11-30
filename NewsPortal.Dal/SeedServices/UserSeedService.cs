@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
 using NewsPortal.Model;
@@ -8,8 +6,7 @@ using NewsPortal.Dal.SeedInterfaces;
 using NewsPortal.Model.Users;
 using Microsoft.AspNetCore.Identity;
 
-namespace NewsPortal.Dal.SeedServices
-{
+namespace NewsPortal.Dal.SeedServices {
     public class UserSeedService: IUserSeedService
     {
 

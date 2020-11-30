@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
-namespace NewsPortal.Model
-{
+namespace NewsPortal.Model {
     public class Comment
     {
         public int Id { get; set; }

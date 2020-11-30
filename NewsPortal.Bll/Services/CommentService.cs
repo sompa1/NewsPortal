@@ -4,13 +4,11 @@ using System.Linq.Expressions;
 using System.Linq;
 using NewsPortal.Bll.Dtos;
 using NewsPortal.Model;
-using System.Text;
 using NewsPortal.Bll.Interfaces;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 
-namespace NewsPortal.Dal.Services
-{
+namespace NewsPortal.Dal.Services {
     public class CommentService : ICommentService
     {
         private readonly NewsPortalDbContext _dbContext;

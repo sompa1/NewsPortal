@@ -1,18 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NewsPortal.Bll.Dtos;
 using NewsPortal.Bll.Interfaces;
 using NewsPortal.Model;
-using NewsPortal.Dal.Specifications;
 using NewsPortal.Web.Models;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Collections.Generic;
 
-namespace NewsPortal.Web.Controllers
-{
+namespace NewsPortal.Web.Controllers {
 
     public class NewsController : Controller
     {

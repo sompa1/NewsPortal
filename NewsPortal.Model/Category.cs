@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
-namespace NewsPortal.Model
-{
+namespace NewsPortal.Model {
     public class Category
     {
         public int Id { get; set; }
