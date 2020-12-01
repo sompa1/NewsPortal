@@ -34,12 +34,16 @@ namespace NewsPortal.Web.Controllers {
         [AllowAnonymous]
         public IActionResult Index(NewsIndexModel model)
         {
+            if (model.Specification is null) {
+                model.Specification = new Dal.Specifications.NewsSpecification();
+            }
+
             var list = new List<SelectListItem> {
                 new SelectListItem("", null)
             };
             list.AddRange(_categoryService.GetAllCategory());
             model.Categories = list;
-            model.News = _newsService.GetNews(model.Specification ?? new Dal.Specifications.NewsSpecification());
+            model.News = _newsService.GetNews(model.Specification);
             return View(model);
         }
 
