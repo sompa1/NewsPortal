@@ -33,7 +33,7 @@ namespace NewsPortal.Web.Controllers
         public IActionResult Index() {
             var model = new AdminPageModel {
                 CurrentUserId = CurrentUserId ?? 0,
-                Users = _userManager.Users
+                Users = _userManager.Users.ToList()
             };
             return View(model);
         }
