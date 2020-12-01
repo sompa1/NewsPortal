@@ -98,31 +98,6 @@ namespace NewsPortal.Bll.Services {
             };
         }
 
-        public IEnumerable<NewsDto> GetAllNews(NewsSpecification specification = null)
-        {
-            var today = DateTime.Today;
-
-            IQueryable<News> query = _dbContext
-                .News.Include(n => n.Author)
-                .Include(n => n.Comments)
-                .Include(n => n.Category);
-
-
-            return query.Where(n=> n.ExpirationDate > today).Select(n => new NewsDto
-            {
-                Id = n.Id,
-                Author = n.Author.Name,
-                AuthorId = n.AuthorId,
-                CategoryId = n.CategoryId,
-                Category = n.Category.Name,
-                Body = n.Body,
-                NumberOfComments = n.Comments.Count(),
-                ShortDescription = n.ShortDescription,
-                Headline = n.Headline,
-                PublishYear = n.PublishDate.Year
-            }).ToList();
-        }
-
         public async Task<NewsDto> AddNews(int authorId, string headline, string shortDescription, string body, int categoryId, DateTime expirationDate)
         {
             var news = _dbContext.News.Add(new News

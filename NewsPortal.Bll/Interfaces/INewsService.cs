@@ -9,7 +9,6 @@ namespace NewsPortal.Bll.Interfaces
     public interface INewsService
     {
         Task<NewsDto> AddNews(int authorId, string headline, string shortDescription, string body, int categoryId, DateTime expirationDate);
-        IEnumerable<NewsDto> GetAllNews(NewsSpecification specification = null);
         PagedResult<NewsDto> GetNews(NewsSpecification specification);
         Task<NewsDto> GetOneNews(int id);
         Task<int> PopulateDbWithNews();
