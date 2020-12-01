@@ -18,23 +18,24 @@
         <th></th>
     </tr>
     @foreach (var user in Model.Users) {
+        var roles = await UserManager.GetRolesAsync(user);
         <tr>
             <td>@user.Id</td>
             <td>@user.UserName</td>
             <td>@user.Email</td>
             <td>
-                @foreach (var role in await UserManager.GetRolesAsync(user)) {
+                @foreach (var role in roles) {
                     @role<br />
                 }
             </td>
             <td>
-                @if ((await UserManager.GetRolesAsync(user)).Contains("Authors")) {
+                @if (roles.Contains("Authors")) {
                     @Html.ActionLink("Revoke Author role", "RevokeAuthorRole", new { id = user.Id })
                 } else {
                     @Html.ActionLink("Grant Author role", "GrantAuthorRole", new { id = user.Id })
                 }
                 |
-                @if ((await UserManager.GetRolesAsync(user)).Contains("Administrators")) {
+                @if (roles.Contains("Administrators")) {
                     @Html.ActionLink("Revoke Admin role", "RevokeAdminRole", new { id = user.Id })
                 } else {
                     @Html.ActionLink("Grant Admin role", "GrantAdminRole", new { id = user.Id })
