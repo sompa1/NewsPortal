@@ -6,6 +6,7 @@
 <div class="card card-body">
     <div class="row">
         <div class="col-3">
+            <img src="https://www.waarp.fr/wp-content/uploads/2017/09/news.jpg" alt="News Picture" class="mw-100">
         </div>
         <div class="col-9">
             <p class="text-info">
@@ -18,16 +19,22 @@
                 Category: @Model.News.Category
             </p>
             <hr />
-            <p class="small">@Html.Raw(@Model.News.ShortDescription)</p>
+            <p class="text-info">
+                @Html.Raw(@Model.News.ShortDescription)
+            </p>
         </div>
     </div>
-    <div>
-        @Html.Raw(Model.News.Body)
-        @if (User.IsInRole("Administrators") || Model.CurrentUserId == Model.News.AuthorId) {
-            <div style="text-align:end">
-                <a asp-controller="News" asp-action="DeleteNews" asp-route-id="@Model.News.Id">Delete article</a>
-            </div>
-        }
+    <hr />
+    <div class="row">
+        <div class="col">
+            @Html.Raw(Model.News.Body)
+            @if (User.IsInRole("Administrators") || Model.CurrentUserId == Model.News.AuthorId)
+            {
+                <div style="text-align:end">
+                    <a asp-controller="News" asp-action="DeleteNews" asp-route-id="@Model.News.Id">Delete article</a>
+                </div>
+            }
+        </div>
     </div>
 </div>
 
